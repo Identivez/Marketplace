@@ -1,0 +1,76 @@
+﻿@model VentasDTO // Asegúrate de que este DTO sea adecuado.
+@{
+}
+
+<div class="row">
+    <div class="col-lg-6 mx-auto rounded border p-4">
+        <h2 class="text-center mb-3">Productos de Fake Store</h2>
+        <hr />
+    </div>
+</div>
+
+<form method="post">
+    <!-- El formulario enviará los datos para consultar productos -->
+    <div class="row mb-3">
+        <label class="col-sm-8 col-form-label">Ingresa una categoría para mostrar productos:</label>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Categoría*</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="Category" placeholder="Ejemplo: electronics, jewelery" />
+            <span asp-validation-for="Category" class="text-danger"></span> <!-- Validación -->
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col d-grid">
+            <button type="submit" class="btn btn-primary">Mostrar</button>
+        </div>
+        <div class="col d-grid">
+            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index" role="button">
+                Cancelar
+            </a>
+        </div>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    if (Model.WithData)
+    {
+        <p>Datos de productos disponibles:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Products != null && Model.Products.Count > 0) // Asegúrate de que sea la lista de productos.
+                {
+                    foreach (var product in Model.Products) // Recorre la lista de productos.
+                    {
+                        <tr>
+                            <td>@product.Title</td>
+                            <td>@product.Description</td>
+                            <td>@product.Price.ToString("C")</td>
+                            <td><img src="@product.Image" alt="@product.Title" style="width: 100px; height: auto;" /></td>
+                            <td>@product.Category</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay datos de productos disponibles.</p>
+    }
+}
+else
+{
+    <p>No hay datos de productos disponibles.</p>
+}

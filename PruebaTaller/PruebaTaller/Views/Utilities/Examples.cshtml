@@ -1,0 +1,108 @@
+﻿@model UtilitiesDTO
+@{
+}
+
+<div class="row">
+    <div class="col-lg-6 mx-auto rounded border p-4">
+        <h2 class="text-center mb-3">Utilities</h2>
+        <hr />
+    </div>
+</div>
+<form method="post">
+    <!-- el formulario va a reaccionar a un evento(envia datos)-->
+    <div class="row">
+        <label class="col-sm-8 col-form-label">Dame un país, te mostrare sus escuelas:</label>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Pais*</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="Pais">
+            <span asp-validation-for="Pais" class="text-danger"></span><!-- asp propriedad de ASPNet core tu vas a reaccionar a la validacion que tiene el modelo utilitiesDTO del campo pais  -->
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col d-grid">
+            <button type="submit" class="btn btn-primary">Mostrar</button>
+        </div>
+        <div class="col d-grid">
+            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index" role="button">
+                Cancel
+            </a>
+        </div>
+    </div>
+</form>
+@if (Model != null)
+
+{
+    @if (Model.WithData == true)
+
+    {
+        <p>University data available.</p>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Domains</th>
+                    <th>Web Pages</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Universities != null)
+
+                {
+                    @foreach (var university in Model.Universities)
+
+                    {
+                        <tr>
+                            <td>@university.Name</td>
+                            <td>@university.Country</td>
+                            <td>@university.StateProvince</td>
+                            <td>
+                                @if (university.Domains != null)
+
+                                {
+                                    @foreach (var domain in university.Domains)
+
+                                    {
+                                        <span>@domain</span>
+
+                                        <br />
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @if (university.WebPages != null)
+
+                                {
+                                    @foreach (var webPage in university.WebPages)
+
+                                    {
+                                        <a href="@webPage" target="_blank">@webPage</a>
+
+                                        <br />
+                                    }
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    else
+
+    {
+        <p>NO University data available.</p>
+    }
+}
+
+else
+
+{
+    <p>NO University data available.</p>
+}

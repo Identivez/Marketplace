@@ -1,0 +1,94 @@
+﻿@model ProductDTOO
+@{
+}
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">New Product</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">Add Products in Bulk</h2>
+
+        <form method="post" enctype="multipart/form-data" asp-action="UploadExcel">
+            <div class="form-group">
+                <label for="excelFile">Upload Excel File:</label>
+                <input type="file" class="form-control" name="excelFile" />
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+    </div>
+</div>
+<form method="post" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Name</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Brand</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="Brand">
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Category</label>
+        <div class="col-sm-8">
+            <select class="form-select" asp-for="Category">
+                <option value='Hardware'>Hardware</option>
+                <option value='Software'>Software</option>
+                <option value='Periféricos>Periféricos</option>
+                <option value='Accesorios'>Accesorios</option>
+                <option value='Networking'>Networking</option>
+                <option value='Almacenamiento y backup'>Almacenamiento y backup</option>
+                <option value='Gaming'>Gaming</option>
+                <option value='Realidad virtual y aumentada'>Realidad virtual y aumentada</option>
+                <option value='Componentes de ensamblaje'>Componentes para ensamblaje</option>
+                <option value='Refacciones y piezas de repuesto'>Refacciones y piezas de repuesto</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Price</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm-8">
+            <textarea class="form-control" asp-for="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-4 col-form-label">Image</label>
+        <div class="col-sm-8">
+            <input class="form-control" asp-for="ImageFile">
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-sm-4 col-sm-4 d-grid">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="col-sm-4 d-grid">
+            <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Index" role="button">
+                Cancel
+            </a>
+        </div>
+    </div>
+
+</form>
+

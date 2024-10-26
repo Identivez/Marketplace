@@ -1,0 +1,72 @@
+﻿@model ProductDetailsView
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="border rounded shadow-sm p-4 text-center">
+                <img src="@Url.Content($"~/images/products/{Model.Product.ImageFileName}")" class="img-fluid mb-3" alt="Product Image"
+                     style="max-height: 500px; object-fit: contain; object-position: center; border: 1px solid #ddd; padding: 10px;" />
+                <div class="mt-3">
+                    <span class="badge bg-success">Best Seller</span>
+                    <span class="badge bg-warning text-dark">Top Rated</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <h1 class="text-dark fw-bold mb-4">@Model.Product.Name</h1>
+            <p class="text-muted">Brand: <strong>@Model.Product.Brand</strong></p>
+            <p class="text-muted">Category: <strong>@Model.Product.Category</strong></p>
+            <div class="my-3">
+                <h2 class="text-success fw-bold">Price: $@Model.Product.Price.ToString("F2")</h2>
+                <p class="text-muted">Inclusive of all taxes</p>
+            </div>
+            <p class="text-dark mb-4">@Model.Product.Description</p>
+
+            <div class="d-grid gap-3 mb-4">
+                <!-- Botón para agregar al carrito -->
+                <a class="btn btn-primary btn-lg fw-bold" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.Id" style="background-color: #022398; border-color: #022398;">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </a>
+                <!-- Botón de compra ahora -->
+                <a class="btn btn-warning btn-lg fw-bold" asp-controller="Checkout" asp-action="Index" asp-route-id="@Model.Product.Id" style="background-color: #2046C5; border-color: #2046C5; color: #fff;">
+                    Buy Now
+                </a>
+                <!-- Botón para volver a la tienda -->
+                <a href="/Home/Index" class="btn btn-outline-secondary btn-lg" role="button" style="border-color: #022398; color: #022398;">
+                    Back to Store
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    <div class="mt-5">
+        <h3 class="pb-3">Related Products</h3>
+        <div class="row g-4">
+            @foreach (var relatedProduct in Model.RelatedProducts)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card h-100 shadow-sm" style="transition: transform 0.3s;">
+                        <img src="@Url.Content($"~/images/products/{relatedProduct.ImageFileName}")" class="card-img-top" alt="@relatedProduct.Name" style="object-fit: cover; max-height: 200px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@relatedProduct.Name</h5>
+                            <p class="card-text text-muted">$@relatedProduct.Price.ToString("F2")</p>
+                            <a href="@Url.Action("Details", "Store", new { id = relatedProduct.Id })" class="btn btn-outline-primary btn-sm" style="border-color: #022398; color: #022398;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>

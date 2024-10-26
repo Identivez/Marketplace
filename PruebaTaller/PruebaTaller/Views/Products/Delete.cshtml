@@ -1,0 +1,39 @@
+﻿@model Product
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-4 bg-light">
+        <h2 class="text-center mb-4">Eliminar producto</h2>
+        <p class="text-center fs-5 fw-bold text-danger">¿Estás seguro que quieres eliminar el siguiente producto?</p>
+        <div class="text-center mb-4">
+            <img src="/images/products/@Model.ImageFileName" alt="Product Image" class="img-thumbnail" width="250" />
+
+        </div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4 fw-bold">Name:</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+
+            <dt class="col-sm-4 fw-bold">Brand:</dt>
+            <dd class="col-sm-8">@Model.Brand</dd>
+
+            <dt class="col-sm-4 fw-bold">Category:</dt>
+            <dd class="col-sm-8">@Model.Category</dd>
+
+            <dt class="col-sm-4 fw-bold">Price:</dt>
+            <dd class="col-sm-8">$@Model.Price.ToString("F2")</dd>
+        </dl>
+
+        <form method="post" asp-action="DeleteConfirmed">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="row mt-4">
+                <div class="col-sm-6 d-grid">
+                    <button type="submit" class="btn btn-danger btn-lg">Delete</button>
+                </div>
+                <div class="col-sm-6 d-grid">
+                    <a class="btn btn-outline-secondary btn-lg" asp-controller="Products" asp-action="Index" role="button">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
