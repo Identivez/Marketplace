@@ -2,9 +2,12 @@
 @{
 }
 
-<div class="row">
-    <div class="col-md-4 mx-auto rounded border p-4">
-        <h2 class="text-center mb-3">INICIO DE SESIÓN</h2>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4 shadow-lg p-4 rounded" style="background-color: #1e1e1e;">
+        <div class="text-center mb-4">
+            <img src="~/images/GEJLABSF.png" alt="GEJ LAB Logo" class="img-fluid mb-3" style="max-height: 100px;">
+            <h2 class="text-light">Inicio de Sesión</h2>
+        </div>
         <hr />
         @* Sección para mostrar un mensaje de error si ViewBag.ErrorMessage no es nulo *@
         @if (ViewBag.ErrorMessage != null)
@@ -14,47 +17,78 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
+
+        @* Formulario de inicio de sesión *@
+        <form method="post">
+            @* Campo de entrada para el correo electrónico *@
+            <div class="mb-3">
+                <input asp-for="Email" class="form-control" placeholder="Correo Electrónico" style="background-color: #2e2e2e; color: #ffffff; border: 1px solid #444;">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            @* Campo de entrada para la contraseña *@
+            <div class="mb-3">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Contraseña" style="background-color: #2e2e2e; color: #ffffff; border: 1px solid #444;">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            @* Campo de verificación para recordar la sesión del usuario *@
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" asp-for="RememberMe" style="background-color: #2e2e2e; border-color: #444;">
+                <label class="form-check-label text-light">Recuérdame</label>
+            </div>
+
+            @* Botones de acción para iniciar sesión y cancelar *@
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-warning btn-lg">Iniciar Sesión</button>
+            </div>
+            <div class="d-grid mb-3">
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Index" role="button">
+                    Cancelar
+                </a>
+            </div>
+
+            @* Enlace para recuperar la contraseña olvidada *@
+            <div class="text-center">
+                <a class="btn btn-link text-light" asp-controller="Account" asp-action="ForgotPassword">
+                    ¿Olvidaste tu contraseña?
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 
-@* Formulario de inicio de sesión *@
-<form method="post">
-    @* Campo de entrada para el correo electrónico *@
-    <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+<style>
+    body {
+        background-color: #000000;
+    }
 
-    @* Campo de entrada para la contraseña *@
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+    .btn-warning {
+        background-color: #ff9f00;
+        border: none;
+        color: #ffffff;
+    }
 
-    @* Campo de verificación para recordar la sesión del usuario *@
-    <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" asp-for="RememberMe" />
-        <label class="form-check-label">Remember Me</label>
-    </div>
+        .btn-warning:hover {
+            background-color: #e68a00;
+        }
 
-    @* Botones de acción para iniciar sesión y cancelar *@
-    <div class="row mb-3">
-        <div class="col d-grid">
-            <button type="submit" class="btn btn-primary">Log in</button>
-        </div>
-        <div class="col d-grid">
-            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Index" role="button">
-                Cancel
-            </a>
-        </div>
-    </div>
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+    }
 
-    @* Enlace para recuperar la contraseña olvidada *@
-    <div>
-        <a class="btn btn-link" asp-controller="Account" asp-action="ForgotPassword">
-            Forgot your password?
-        </a>
-    </div>
-</form>
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #ff9f00;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5) !important;
+    }
+</style>
