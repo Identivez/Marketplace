@@ -9,18 +9,18 @@ using PruebaTaller.Services;
 
 #nullable disable
 
-namespace PruebaTaller.Migrations
+namespace GEJ_Lab.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241008180541_MisProductos")]
-    partial class MisProductos
+    [Migration("20241029051308_prueba")]
+    partial class prueba
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

@@ -30,20 +30,30 @@ namespace PruebaTaller.Controllers
         /// <returns>Vista con los elementos del carrito.</returns>
         public IActionResult Index()
         {
+            // Obtener el carrito de la sesión o crear uno nuevo si no existe
             var cart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("Cart") ?? new ShoppingCart();
             ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
             return View(cart.GetItems());
         }
 
+        /// <summary>
+        /// Agrega un producto al carrito de compras.
+        /// </summary>
+        /// <param name="id">El identificador del producto a agregar.</param>
+        /// <returns>Redirige a la vista del carrito.</returns>
         public IActionResult AddToCart(int id)
         {
+            // Buscar el producto por su ID en la base de datos
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
 
+            // Obtener el carrito de la sesión o crear uno nuevo si no existe
             var cart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("Cart") ?? new ShoppingCart();
+
+            // Crear un nuevo ítem de carrito con el producto seleccionado
             var cartItem = new Cart_Item
             {
                 ProductId = product.Id,
@@ -53,23 +63,41 @@ namespace PruebaTaller.Controllers
                 Quantity = 1
             };
 
+            // Agregar el ítem al carrito
             cart.AddItem(cartItem);
-            HttpContext.Session.SetObjectAsJson("Cart", cart);
-            ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity); // Actualizar el valor del ViewBag
 
+            // Guardar el carrito actualizado en la sesión
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+
+            // Actualizar la cantidad de elementos en ViewBag
+            ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
+
+            // Redirigir a la vista del carrito
             return RedirectToAction("Index", "Cart");
         }
 
+        /// <summary>
+        /// Elimina un producto del carrito de compras.
+        /// </summary>
+        /// <param name="id">El identificador del producto a eliminar.</param>
+        /// <returns>Redirige a la vista del carrito actualizado.</returns>
         public IActionResult RemoveItem(int id)
         {
+            // Obtener el carrito de la sesión o crear uno nuevo si no existe
             var cart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("Cart") ?? new ShoppingCart();
-            cart.RemoveItem(id);
-            HttpContext.Session.SetObjectAsJson("Cart", cart);
-            ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity); // Actualizar el valor del ViewBag
 
+            // Eliminar el ítem del carrito por su ID
+            cart.RemoveItem(id);
+
+            // Guardar el carrito actualizado en la sesión
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+
+            // Actualizar la cantidad de elementos en ViewBag
+            ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
+
+            // Redirigir a la vista del carrito
             return RedirectToAction("Index");
         }
-
 
         /// <summary>
         /// Actualiza las cantidades de los productos en el carrito de compras.

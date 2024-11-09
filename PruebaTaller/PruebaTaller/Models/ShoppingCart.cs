@@ -17,7 +17,7 @@ namespace PruebaTaller.Models
 
         /// <summary>
         /// Añade un artículo al carrito de compras.
-        /// Si el artículo ya existe, incrementa su cantidad.
+        /// Si el artículo ya existe en el carrito, incrementa su cantidad.
         /// </summary>
         /// <param name="item">El artículo a agregar al carrito.</param>
         public void AddItem(Cart_Item item)
@@ -44,7 +44,7 @@ namespace PruebaTaller.Models
 
         /// <summary>
         /// Elimina un artículo del carrito de compras o decrementa su cantidad.
-        /// Si la cantidad es 1, elimina el artículo del carrito.
+        /// Si la cantidad del artículo es mayor a 1, la decrementa; si es 1, lo elimina del carrito.
         /// </summary>
         /// <param name="productId">El ID del producto que se desea eliminar o decrementar.</param>
         public void RemoveItem(int productId)
@@ -65,7 +65,7 @@ namespace PruebaTaller.Models
 
         /// <summary>
         /// Actualiza la cantidad de un artículo en el carrito.
-        /// Si la cantidad es 0, elimina el artículo del carrito.
+        /// Si la cantidad establecida es 0, elimina el artículo del carrito.
         /// </summary>
         /// <param name="productId">El ID del producto que se desea actualizar.</param>
         /// <param name="quantity">La nueva cantidad para el producto.</param>

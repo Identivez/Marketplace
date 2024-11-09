@@ -1,0 +1,113 @@
+﻿@model StoreSearchModel
+@{
+    // int pageIndex = (int)ViewData["PageIndex"]!;
+    // int totalPages = (int)ViewData["TotalPages"]!;
+    // string search = (string)ViewData["Search"]!;
+}
+
+<!-- Sección principal de la tienda -->
+<div class="bg-light mt-5" id="Todosproducts">
+    <div class="container py-5">
+        <h2 class="pb-4 text-center">Los Mejores Productos</h2>
+
+        <!-- Formulario de filtros de búsqueda -->
+        <form method="get" class="row g-3 mb-4">
+            <!-- Filtro por marca -->
+            <div class="col-lg-2 col-md-4">
+                <select class="form-select" asp-for="SelectedBrand" onchange="this.form.submit()">
+                    <option value="">Todas las Marcas</option>
+                    @if (Model?.Brands != null)
+                    {
+                        @foreach (var brand in Model.Brands)
+                        {
+                            <option value="@brand" selected="@(Model.SelectedBrand == brand ? "selected" : null)">@brand</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- Filtro por categoría -->
+            <div class="col-lg-2 col-md-4">
+                <select class="form-select" asp-for="SelectedCategory" onchange="this.form.submit()">
+                    <option value="">Todas las Categorías</option>
+                    @if (Model?.Categories != null)
+                    {
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category" selected="@(Model.SelectedCategory == category ? "selected" : null)">@category</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- Filtro por ordenamiento -->
+            <div class="col-lg-2 col-md-4">
+                <select class="form-select" asp-for="Sort" onchange="this.form.submit()">
+                    <option value="newest" selected="@(Model.Sort == "newest" ? "selected" : null)">Ordenar por Más Nuevos</option>
+                    <option value="price_asc" selected="@(Model.Sort == "price_asc" ? "selected" : null)">Precio: De Menor a Mayor</option>
+                    <option value="price_desc" selected="@(Model.Sort == "price_desc" ? "selected" : null)">Precio: De Mayor a Menor</option>
+                </select>
+            </div>
+
+            <!-- Campo de búsqueda por nombre -->
+            <div class="col-lg-3 col-md-6">
+                <input class="form-control" asp-for="Search" placeholder="Buscar por Nombre">
+            </div>
+
+            <!-- Botón de búsqueda -->
+            <div class="col-lg-1 col-md-2">
+                <button class="btn btn-outline-success w-100" type="submit">Buscar</button>
+            </div>
+        </form>
+
+        <!-- Lista de productos -->
+        <div class="row mb-5 g-4">
+            @if (Model?.Products == null || !Model.Products.Any())
+            {
+                <p class="text-center">No se encontraron productos.</p>
+            }
+            else
+            {
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-lg-3 col-md-6">
+                        <div class="product-card rounded border shadow-sm p-4 text-center h-100">
+                            <img src="@Url.Content($"~/images/products/{product.ImageFileName}")" class="img-fluid mb-3" alt="Product Image" />
+                            <h5 class="py-2">@product.Name</h5>
+                            <p class="text-muted">Marca: @product.Brand</p>
+                            <p class="text-muted">Categoría: @product.Category</p>
+                            <h4 class="mb-3 text-success fw-bold">$@product.Price.ToString("F2")</h4>
+
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-outline-primary btn-sm mb-2" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id">Ver Detalles</a>
+                                <a class="btn btn-primary btn-sm mb-2" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id">Añadir al Carrito</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Componente de paginación -->
+<nav>
+    <ul class="pagination justify-content-center">
+        @if (ViewData["TotalPages"] != null && ViewData["PageIndex"] != null)
+        {
+            int totalPages = Convert.ToInt32(ViewData["TotalPages"]);
+            int pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
+
+            if (totalPages > 0 && pageIndex > 0)
+            {
+                for (int i = 1; i <= totalPages; i++)
+                {
+                    string activeClass = i == pageIndex ? "active" : "";
+                    <li class="page-item @activeClass">
+                        <a class="page-link" asp-route-pageIndex="@i" asp-route-search="@(Model?.Search ?? string.Empty)" asp-route-selectedBrand="@(Model?.SelectedBrand ?? string.Empty)" asp-route-selectedCategory="@(Model?.SelectedCategory ?? string.Empty)" asp-route-sort="@(Model?.Sort ?? string.Empty)">@i</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>

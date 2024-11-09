@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - GEJ LAB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PruebaTaller.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GEJ_Lab.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -26,6 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Index">Productos</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -37,7 +40,6 @@
                             </a>
                         </li>
                         @if (!SignInManager.IsSignedIn(User))
-
                         {
                             <!-- Mostrar Register y Login solo si no está autenticado -->
                             <li class="nav-item">
@@ -50,15 +52,10 @@
                     </ul>
 
                     @if (SignInManager.IsSignedIn(User))
-
                     {
-
                         var appUser = await UserManager.GetUserAsync(User);
 
-
-
                         if (User.IsInRole("admin"))
-
                         {
                             <!-- Menú desplegable para Admin -->
                             <ul class="navbar-nav">
@@ -77,9 +74,7 @@
                                 </li>
                             </ul>
                         }
-
                         else if (User.IsInRole("client"))
-
                         {
                             <!-- Menú desplegable para Client -->
                             <ul class="navbar-nav">
@@ -98,14 +93,14 @@
                                 </li>
                             </ul>
                         }
-
                     }
                 </div>
             </div>
         </nav>
     </header>
-    @if (ViewData["HomePage"] == null)
 
+    <!-- Renderización condicional del contenido principal -->
+    @if (ViewData["HomePage"] == null)
     {
         <div class="container">
             <main role="main" class="pb-3">
@@ -113,9 +108,7 @@
             </main>
         </div>
     }
-
     else
-
     {
         @RenderBody()
     }
