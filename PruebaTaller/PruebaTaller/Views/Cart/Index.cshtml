@@ -1,46 +1,54 @@
 ﻿@model List<Cart_Item>
 
 @{
-    ViewData["Title"] = "Your Shopping Cart";
+    ViewData["Title"] = "Carrito de compras";
 }
 
 <div class="container my-5">
-    <h2 class="text-center display-4 mb-5" style="color: #ff7e5f;">Your Shopping Cart</h2>
+    <h2 class="text-center display-4 mb-5 text-light" style="color: #DA9D19; text-shadow: 2px 2px #000;">Your Shopping Cart</h2>
 
     @* Mostrar mensaje si el carrito está vacío *@
     @if (Model == null || !Model.Any())
     {
-        <p class="text-center my-5 fs-4">Your cart is empty! <i class="bi bi-cart-x"></i></p>
+        <div class="d-flex flex-column align-items-center my-5">
+            <p class="text-center my-5 fs-4 text-muted">Your cart is empty! <i class="bi bi-cart-x"></i></p>
+            <a href="/Store/Index" class="btn btn-lg btn-warning shadow-lg">Go to Store</a>
+        </div>
     }
     else
     {
         <div class="table-responsive">
             @* Tabla que muestra los artículos en el carrito *@
-            <table class="table table-bordered mt-4" style="background-color: #fffaf0;">
-                <thead class="table-light text-center" style="background-color: #ffecd2;">
+            <table class="table table-hover text-light mt-4">
+                <thead class="text-center" style="background: linear-gradient(135deg, #DA9D19, #e68a00);">
                     <tr>
                         <th>Product</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: #2b2b2b;">
                     @foreach (var item in Model)
                     {
-                        <tr class="text-center">
+                        <tr class="text-center align-middle">
                             <td>
                                 @* Mostrar la imagen del producto *@
-                                <img src="@Url.Content($"~/images/products/{item.ImageFileName}")" class="rounded" style="height: 100px; width: auto; object-fit: contain;" alt="@item.Name" />
+                                <img src="@Url.Content($"~/images/products/{item.ImageFileName}")" class="rounded shadow-sm" style="height: 100px; width: auto; object-fit: contain; transition: transform 0.3s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" alt="@item.Name" />
                             </td>
+
                             <td class="align-middle"><strong>@item.Name</strong></td>
                             <td class="align-middle text-success fs-5">@(item.Price.ToString("C"))</td>
                             <td class="align-middle">
                                 @* Campo para actualizar la cantidad del artículo *@
-                                <input type="number" name="quantities[@item.ProductId]" value="@item.Quantity" min="0" class="form-control text-center update-quantity" data-product-id="@item.ProductId" style="width: 80px; margin: auto;" />
+                                <input type="number" name="quantities[@item.ProductId]" value="@item.Quantity" min="0" class="form-control text-center update-quantity shadow-sm" data-product-id="@item.ProductId" style="width: 80px; margin: auto; background-color: #1c1e21; color: #ffffff; border: none;" />
                             </td>
                             <td class="align-middle text-primary fs-5">@((item.Price * item.Quantity).ToString("C"))</td>
+                            <td class="align-middle">
+                                <button class="btn btn-danger btn-sm remove-item" data-product-id="@item.ProductId"><i class="bi bi-trash"></i> Remove</button>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -49,13 +57,13 @@
 
         <div class="text-end mt-4">
             @* Mostrar el total del carrito *@
-            <h4 class="text-success fw-bold">Total: @Model.Sum(x => x.Price * x.Quantity).ToString("C")</h4>
-            <a href="#" class="btn btn-lg btn-success px-5 mt-3" style="background: linear-gradient(135deg, #00c853, #66ff66); border: none;">Proceed to Checkout</a>
+            <h4 class="text-warning fw-bold">Total: @Model.Sum(x => x.Price * x.Quantity).ToString("C")</h4>
+            <a  href="/Cart/Checkout" class="btn btn-lg btn-warning px-5 mt-3 shadow-lg">Proceed to Checkout</a>
         </div>
     }
 </div>
 
-@* Script para manejar la actualización de cantidades *@
+@* Script para manejar la actualización de cantidades y eliminación de artículos *@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -74,13 +82,29 @@
                 }
             });
         });
-    });
+
+            $('.remove-item').on('click', function () {
+                var productId = $(this).data('product-id');
+
+                $.ajax({
+                    url: '@Url.Action("RemoveFromCart", "Cart")',
+                    type: 'POST',
+                    data: {
+                        productId: productId
+                    },
+                    success: function (response) {
+                        location.reload(); // Recargar la página para reflejar los cambios
+                    }
+                });
+            });
+        });
 </script>
 
 @* Estilos para mejorar la apariencia de la tabla y los botones *@
 <style>
     body {
-        background-color: #f8f9fa; /* Fondo sutil para toda la página */
+        background-color: #1c1e21; /* Fondo oscuro para todo el sitio */
+        color: #ffffff;
     }
 
     .table th,
@@ -96,11 +120,43 @@
             transform: scale(1.1); /* Efecto de agrandamiento al pasar el ratón sobre la imagen */
         }
 
-    .btn-success {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .btn-warning {
+        background-color: #DA9D19;
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s, transform 0.3s;
     }
 
-        .btn-success:hover {
-            background: linear-gradient(135deg, #66ff66, #00c853);
+        .btn-warning:hover {
+            background-color: #e68a00;
+            transform: scale(1.05);
+        }
+
+    .btn-danger {
+        background-color: #ff5f5f;
+        border: none;
+        color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+        .btn-danger:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+    .shadow {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .update-quantity {
+        background-color: #333;
+        color: #ffffff;
+        border-radius: 5px;
+    }
+
+        .update-quantity::-webkit-inner-spin-button {
+            filter: invert(1);
         }
 </style>

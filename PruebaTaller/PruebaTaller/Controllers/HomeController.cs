@@ -42,6 +42,11 @@ namespace PruebaTaller.Controllers
         {
             return View();
         }
+        public IActionResult ContacUs()
+        {
+            return View();
+        }
+
 
         /// <summary>
         /// Muestra la vista de error cuando ocurre una excepción o un error no manejado.

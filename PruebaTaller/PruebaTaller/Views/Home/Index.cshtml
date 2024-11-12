@@ -5,81 +5,90 @@
     ViewData["HomePage"] = true;
 }
 
-@* Sección de Bienvenida *@
-<div class="hero-section text-center py-5" style="background: linear-gradient(135deg, #022398, #2046C5); color: white;">
-    <div class="container">
-        <h1 class="display-3 mb-4">Bienvenido a GEJ Lab</h1>
-        <p class="lead mb-5">Descubre los mejores componentes para tu computadora con ofertas irresistibles.</p>
-        <a class="btn btn-lg btn-light" asp-controller="Store" asp-action="Index">Explorar Productos</a>
-    </div>
-</div>
-
 @* Carrusel de Imágenes de Productos *@
-<div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel">
+<div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel" style="box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); border-radius: 15px; overflow: hidden; max-width: 900px; margin: 0 auto;">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="@Url.Content("~/images/products/kit_memoria_ram.jpg")" class="d-block w-100" style="height: 400px; width: auto; object-fit: contain; object-position: center;" alt="Kit Memoria RAM">
+            <img src="@Url.Content("~/images/products/kit_memoria_ram.jpg")" class="d-block w-100" style="max-height: 500px; width: 100%; object-fit: contain; object-position: center; transition: transform 0.3s ease-in-out; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" alt="Kit Memoria RAM">
         </div>
         <div class="carousel-item">
-            <img src="@Url.Content("~/images/products/disco_duro_externo.jpg")" class="d-block w-100" style="height: 400px; width: auto; object-fit: contain; object-position: center;" alt="Disco Duro Externo">
+            <img src="@Url.Content("~/images/products/disco_duro_externo.jpg")" class="d-block w-100" style="max-height: 500px; width: 100%; object-fit: contain; object-position: center; transition: transform 0.3s ease-in-out; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" alt="Disco Duro Externo">
         </div>
         <div class="carousel-item">
-            <img src="@Url.Content("~/images/products/antivirus.jpg")" class="d-block w-100" style="height: 400px; width: auto; object-fit: contain; object-position: center;" alt="Antivirus">
+            <img src="@Url.Content("~/images/products/antivirus.jpg")" class="d-block w-100" style="max-height: 500px; width: 100%; object-fit: contain; object-position: center; transition: transform 0.3s ease-in-out; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" alt="Antivirus">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.7); border-radius: 50%; width: 50px; height: 50px;"></span>
         <span class="visually-hidden">Previous</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.7); border-radius: 50%; width: 50px; height: 50px;"></span>
         <span class="visually-hidden">Next</span>
     </button>
 </div>
 
+
 @* Estilos personalizados para el carrusel *@
 <style>
+    .carousel-inner img {
+        object-fit: contain;
+        max-height: 500px;
+        width: 100%;
+    }
+
+    .carousel-item img:hover {
+        transform: scale(1.05);
+    }
+
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 50%;
         width: 50px;
         height: 50px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
     }
 
     .carousel-control-prev,
     .carousel-control-next {
         z-index: 10;
     }
+
+    .carousel-indicators [data-bs-target] {
+        background-color: #DA9D19;
+    }
+
+    .carousel-indicators {
+        bottom: -20px;
+    }
 </style>
 
 @* Sección de Nuevos Productos *@
-<div class="bg-light mt-5" id="products">
+<div class="bg-dark mt-5" id="products" style="background: linear-gradient(135deg, #1c1e21, #3a3f47);">
     <div class="container py-5">
-        <h2 class="pb-4 text-center">Nuevos Productos</h2>
+        <h2 class="pb-4 text-center display-4" style="color: #DA9D19;">Nuevos Productos</h2>
         <div class="row mb-5 g-4">
             @foreach (var product in Model)
             {
                 <div class="col-lg-3 col-md-6">
-                    <div class="product-card rounded border shadow-sm p-4 text-center h-100" style="transition: transform 0.3s;">
+                    <div class="product-card rounded border shadow-sm p-4 text-center h-100" style="transition: transform 0.3s, box-shadow 0.3s; background: #2c2f33; color: #ffffff;">
                         <img src="@Url.Content($"~/images/products/{product.ImageFileName}")" class="img-fluid mb-3" alt="Product Image"
-                             style="height: 200px; object-fit: contain" />
-                        <h5 class="py-2">@product.Name</h5>
+                             style="height: 200px; object-fit: contain; border-radius: 15px; background: #fff; padding: 10px; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" />
+                        <h5 class="py-2" style="color: #DA9D19;">@product.Name</h5>
                         <p class="text-muted">Marca: @product.Brand</p>
                         <p class="text-muted">Categoría: @product.Category</p>
                         <h4 class="mb-3 text-success">$@product.Price.ToString("F2")</h4>
 
                         @* Botón para ver detalles del producto *@
-                        <a class="btn btn-outline-primary btn-sm mb-2" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Ver Detalles</a>
+                        <a class="btn btn-outline-warning btn-sm mb-2 fw-bold" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button" style="border-color: #ff9f00; color: #ff9f00;">Ver Detalles</a>
 
                         @* Botón para agregar al carrito *@
-                        <a class="btn btn-primary btn-sm mb-2" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id">
-                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        <a class="btn btn-warning btn-sm mb-2 fw-bold" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id" style="background-color: #ff9f00; border-color: #ff9f00; color: #1c1e21;">
+                            <i class="bi bi-cart-plus"></i> Añadir al Carrito
                         </a>
-
-
                     </div>
                 </div>
+
             }
         </div>
     </div>
@@ -89,8 +98,26 @@
 <style>
     .product-card:hover {
         transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .product-card img {
+        transition: transform 0.3s;
+    }
+
+        .product-card img:hover {
+            transform: scale(1.1);
+        }
+
+    .btn-warning {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+        .btn-warning:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+            color: #ffffff;
+        }
 </style>
 
 @using Microsoft.AspNetCore.Identity

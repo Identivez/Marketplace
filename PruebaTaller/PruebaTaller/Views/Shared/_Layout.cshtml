@@ -12,9 +12,9 @@
         :root {
             --primary-color: #022398;
             --secondary-color: #f8f9fa;
-            --accent-color: #ff9f00;
+            --accent-color: #DA9D19;
             --dark-color: #1c1e21;
-            --light-text-color: #ffffff;
+            --light-text-color: #E6FBFA;
         }
 
         body {
@@ -28,10 +28,13 @@
 
         .navbar-brand {
             color: var(--light-text-color) !important;
+            font-weight: bold;
+            font-size: 1.5em;
         }
 
         .nav-link, .navbar-toggler-icon {
             color: var(--light-text-color) !important;
+            transition: color 0.3s;
         }
 
         .navbar-nav .nav-item .nav-link:hover {
@@ -39,23 +42,41 @@
         }
 
         .search-bar {
-            max-width: 400px;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .btn-warning, .btn-outline-light {
             color: var(--light-text-color);
+            font-weight: bold;
         }
 
         .btn-warning {
             background-color: var(--accent-color);
             border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-warning:hover {
+            background-color: #e68a00;
         }
 
         footer {
             background-color: var(--primary-color);
             color: var(--light-text-color);
-            padding: 1rem;
+            padding: 2rem;
             margin-top: 50px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #ffcc00;
         }
 
         .badge {
@@ -66,6 +87,32 @@
             font-size: 1.8em;
             color: var(--accent-color);
         }
+
+        .hero-section {
+            background: linear-gradient(135deg, #022398, #DA9D19);
+            color: var(--light-text-color);
+            padding: 100px 0;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section h1 {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .hero-section .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -73,8 +120,9 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/GEJLABSF.png" alt="GEJ LAB Logo" height="40" />
+                    <img src="~/images/GEJLABSF.png" alt="GEJ LAB Logo" height="40" class="me-2" style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" /> GEJ LAB
                 </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -88,6 +136,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Store" asp-action="Index">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ContacUs">Contactanos</a>
                         </li>
                     </ul>
                     <form class="d-flex me-3 search-bar">
@@ -105,46 +156,59 @@
                         </li>
                         @if (!SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="btn btn-outline-light me-2" asp-area="" asp-controller="Account" asp-action="Register">Registrarse</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
-                            </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-outline-light me-2" asp-area="" asp-controller="Account" asp-action="Register">Registrarse</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                    </li>
                         }
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
                         var appUser = await UserManager.GetUserAsync(User);
 
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @(appUser!.FirstName + " " + appUser!.LastName + (User.IsInRole("admin") ? " (Admin)" : " (Client)"))
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
                                     @if (User.IsInRole("admin"))
                                     {
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Productos</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminOrders" asp-action="Index">Órdenes</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a></li>
+                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Productos</a></li>
+                                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminOrders" asp-action="Index">Órdenes</a></li>
+                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a></li>
                                     }
                                     else if (User.IsInRole("client"))
                                     {
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="ClientOrders" asp-action="Index">Órdenes</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ventas" asp-action="Ventas">Productos</a></li>
+                                                        <li><a class="dropdown-item" asp-area="" asp-controller="ClientOrders" asp-action="Index">Órdenes</a></li>
+                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ventas" asp-action="Ventas">Productos</a></li>
                                     }
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Perfil</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Perfil</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
-                            </li>
-                        </ul>
                     }
                 </div>
             </div>
         </nav>
     </header>
+
+    @if (ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home")
+    {
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="container">
+                    <h1>Bienvenidos a GEJ LAB Marketplace</h1>
+                    <p>Encuentra los mejores productos tecnológicos a precios increíbles.</p>
+                <a href="/Store/Index" class="btn btn-lg" style="background-color: #DA9D19; border-color: #DA9D19; color: #ffffff;">Explorar Productos</a>
+
+                </div>
+            </div>
+    }
 
     <div class="container mt-4">
         <main role="main" class="pb-3">

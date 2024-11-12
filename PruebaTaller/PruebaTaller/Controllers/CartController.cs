@@ -35,7 +35,15 @@ namespace PruebaTaller.Controllers
             ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
             return View(cart.GetItems());
         }
-
+        public IActionResult Checkout()
+        {
+            var model = new List<Cart_Item>();
+            return View(model);
+        }
+        public IActionResult Payment()
+        {
+            return View();
+        }
         /// <summary>
         /// Agrega un producto al carrito de compras.
         /// </summary>

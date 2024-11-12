@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="container my-5">
+    <h2 class="text-center display-4 mb-5" style="color: #DA9D19; text-shadow: 2px 2px #000;">Proceed to Payment</h2>
+
+    <div class="row">
+        <!-- Detalles de Envío -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #2c2f33, #393e46); color: #E6FBFA; border-radius: 15px;">
+                <h4 class="mb-4" style="color: #DA9D19;">Shipping Details</h4>
+                <form>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control shadow-sm" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control shadow-sm" id="address" placeholder="Street address, P.O. box, company name, c/o" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control shadow-sm" id="city" placeholder="Enter your city" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" class="form-control shadow-sm" id="state" placeholder="Enter your state" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="zip" class="form-label">Zip Code</label>
+                            <input type="text" class="form-control shadow-sm" id="zip" placeholder="Enter your zip code" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control shadow-sm" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Métodos de Pago -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #222831, #393e46); color: #E6FBFA; border-radius: 15px;">
+                <h4 class="text-warning mb-4">Payment Methods</h4>
+
+                <!-- Botón PayPal simulado -->
+                <div class="text-center mb-4">
+                    <button class="btn btn-outline-primary btn-lg w-100 mb-3" style="background-color: #0070ba; border-color: #0070ba; color: #E6FBFA; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-paypal me-2" style="font-size: 1.5rem;"></i> Pay with PayPal
+                    </button>
+                </div>
+
+                <hr class="text-muted">
+
+                <!-- Tarjeta de Crédito o Débito -->
+                <h5 class="text-light mb-3">Pay with Credit or Debit Card</h5>
+                <form>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" class="form-control shadow-sm" id="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="expiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" class="form-control shadow-sm" id="expiryDate" placeholder="MM/YY" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control shadow-sm" id="cvv" placeholder="CVV" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-warning w-100 mt-3 fw-bold" style="background-color: #DA9D19; border: none;">Confirm Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+    body {
+        background-color: #1c1e21;
+    }
+
+    .card {
+        border-radius: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .form-control {
+        border-radius: 10px;
+        background-color: #2c2f33;
+        color: #E6FBFA;
+        border: 1px solid #444;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+        .form-control:hover,
+        .form-control:focus {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-warning {
+        background-color: #DA9D19;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+        .btn-warning:hover {
+            background-color: #e68a00;
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-primary {
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #005ea6;
+            border-color: #005ea6;
+            transform: scale(1.05);
+        }
+
+    h2 {
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    hr {
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+</style>

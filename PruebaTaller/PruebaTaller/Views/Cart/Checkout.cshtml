@@ -1,0 +1,117 @@
+﻿@model List<Cart_Item>
+
+@{
+    ViewData["Title"] = "Proceed to Checkout";
+}
+
+<div class="container my-5">
+    <h2 href="/Cart/Checkout" class="text-center display-4 mb-5" style="color: #DA9D19; text-shadow: 2px 2px #000;">Proceed to Checkout</h2>
+
+    <!-- Resumen del Carrito -->
+    <div class="row">
+        <!-- Resumen del Carrito -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #2c2f33, #393e46); color: #E6FBFA; border-radius: 15px;">
+                <h4 class="mb-4" style="color: #DA9D19;">Your Order Summary</h4>
+
+                @* Mostrar cada artículo del carrito *@
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="text-center my-5">
+                        <p class="fs-4 text-muted">Your cart is empty! <i class="bi bi-cart-x"></i></p>
+                        <a href="/Store/Index" class="btn btn-lg btn-warning shadow w-50" style="background-color: #DA9D19; border: none;">Go to Store</a>
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in Model)
+                        {
+                            <li class="list-group-item d-flex align-items-center border-bottom py-3" style="background: #2c2f33; border-radius: 10px; color: #ffffff;">
+                                <img src="@Url.Content($"~/images/products/{item.ImageFileName}")" class="rounded me-3" style="height: 100px; width: 100px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));" alt="@item.Name" />
+                                <div class="ms-3 flex-fill">
+                                    <h5 class="mb-1 fw-bold">@item.Name</h5>
+                                    <p class="text-muted mb-1">Price: <span class="text-success">$@item.Price.ToString("F2")</span></p>
+                                    <p class="text-muted mb-0">Quantity: <span>@item.Quantity</span></p>
+                                </div>
+                                <h5 class="text-success fw-bold">$@((item.Price * item.Quantity).ToString("F2"))</h5>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <!-- Resumen de Pago -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #222831, #393e46); color: #E6FBFA; border-radius: 15px;">
+                <h4 class="text-warning mb-4">Order Summary</h4>
+
+                @* Mostrar el total del pedido *@
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Subtotal:</span>
+                    <span class="fw-bold text-success">$@Model.Sum(x => x.Price * x.Quantity).ToString("F2")</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Shipping:</span>
+                    <span class="fw-bold text-info">$5.00</span>
+                </div>
+                <hr class="text-muted">
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Total:</span>
+                    <span class="fw-bold fs-3 text-warning">$@((Model.Sum(x => x.Price * x.Quantity) + 5.00m).ToString("F2"))</span>
+                </div>
+
+                <!-- Botón para proceder al pago -->
+                <a href="/Cart/Payment" class="btn btn-lg btn-warning mt-4 w-100 fw-bold" style="background-color: #DA9D19; border: none;">Proceed to Payment</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+    body {
+        background-color: #1c1e21;
+    }
+
+    .card {
+        border-radius: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .list-group-item {
+        border: none;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+        .list-group-item:hover {
+            background: #393e46;
+            transform: scale(1.01);
+        }
+
+    .btn-warning {
+        background-color: #DA9D19;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+        .btn-warning:hover {
+            background-color: #e68a00;
+            transform: translateY(-2px);
+        }
+
+    h2 {
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    hr {
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+</style>
