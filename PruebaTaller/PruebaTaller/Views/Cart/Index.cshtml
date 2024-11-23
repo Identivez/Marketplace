@@ -1,72 +1,84 @@
 ﻿@model List<Cart_Item>
 
 @{
-    ViewData["Title"] = "Carrito de compras";
+    ViewData["Title"] = "Carrito de Compras";
 }
 
 <div class="container my-5">
-    <h2 class="text-center display-4 mb-5 text-light" style="color: #DA9D19; text-shadow: 2px 2px #000;">Your Shopping Cart</h2>
+    <h2 class="display-4 mb-5" style="color: #FFFFFF; font-weight: bold;">Carrito de Compras (@Model.Count) Artículos</h2>
 
-    @* Mostrar mensaje si el carrito está vacío *@
     @if (Model == null || !Model.Any())
     {
-        <div class="d-flex flex-column align-items-center my-5">
-            <p class="text-center my-5 fs-4 text-muted">Your cart is empty! <i class="bi bi-cart-x"></i></p>
-            <a href="/Store/Index" class="btn btn-lg btn-warning shadow-lg">Go to Store</a>
-        </div>
+        <p class="text-center my-5 fs-4 text-muted">¡Tu carrito está vacío! <i class="bi bi-cart-x"></i></p>
+        <a href="/Store/Index" class="btn btn-lg btn-warning shadow w-50 mx-auto d-block" style="background-color: #FF9900; border: none;">Ir a la Tienda</a>
     }
     else
     {
-        <div class="table-responsive">
-            @* Tabla que muestra los artículos en el carrito *@
-            <table class="table table-hover text-light mt-4">
-                <thead class="text-center" style="background: linear-gradient(135deg, #DA9D19, #e68a00);">
-                    <tr>
-                        <th>Product</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody style="background-color: #2b2b2b;">
-                    @foreach (var item in Model)
-                    {
-                        <tr class="text-center align-middle">
-                            <td>
-                                @* Mostrar la imagen del producto *@
-                                <img src="@Url.Content($"~/images/products/{item.ImageFileName}")" class="rounded shadow-sm" style="height: 100px; width: auto; object-fit: contain; transition: transform 0.3s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" alt="@item.Name" />
-                            </td>
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <!-- Botón para eliminar todos los artículos -->
+                <button class="btn btn-danger w-100 mb-3 remove-all-items"><i class="bi bi-trash-fill"></i> Eliminar Todos los Artículos</button>
+                @foreach (var item in Model)
+                {
+                    <div class="card mb-4 border-0 shadow-sm" style="background-color: #333; color: #fff;">
+                        <div class="row g-0">
+                            <div class="col-md-3 d-flex align-items-center justify-content-center p-3">
+                                <img src="@Url.Content($"~/images/products/{item.ImageFileName}")" class="img-fluid rounded" alt="@item.Name" style="object-fit: contain; height: 150px;">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold mb-2">@item.Name</h5>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div>
+                                            <span class="fw-bold" style="color: #00ff6a; font-size: 1.2rem;">Precio: @item.Price.ToString("C")</span>
+                                        </div>
+                                        <input type="number" class="form-control text-center update-quantity" value="@item.Quantity" min="1" data-product-id="@item.ProductId" style="width: 60px;" />
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <button class="btn btn-outline-light btn-sm"><i class="bi bi-heart"></i> Mover a Favoritos</button>
+                                        <button class="btn btn-outline-light btn-sm"><i class="bi bi-save"></i> Guardar para Después</button>
+                                        <button class="btn btn-danger btn-sm remove-item" data-product-id="@item.ProductId"><i class="bi bi-trash"></i> Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
-                            <td class="align-middle"><strong>@item.Name</strong></td>
-                            <td class="align-middle text-success fs-5">@(item.Price.ToString("C"))</td>
-                            <td class="align-middle">
-                                @* Campo para actualizar la cantidad del artículo *@
-                                <input type="number" name="quantities[@item.ProductId]" value="@item.Quantity" min="0" class="form-control text-center update-quantity shadow-sm" data-product-id="@item.ProductId" style="width: 80px; margin: auto; background-color: #1c1e21; color: #ffffff; border: none;" />
-                            </td>
-                            <td class="align-middle text-primary fs-5">@((item.Price * item.Quantity).ToString("C"))</td>
-                            <td class="align-middle">
-                                <button class="btn btn-danger btn-sm remove-item" data-product-id="@item.ProductId"><i class="bi bi-trash"></i> Remove</button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <div class="text-end mt-4">
-            @* Mostrar el total del carrito *@
-            <h4 class="text-warning fw-bold">Total: @Model.Sum(x => x.Price * x.Quantity).ToString("C")</h4>
-            <a  href="/Cart/Checkout" class="btn btn-lg btn-warning px-5 mt-3 shadow-lg">Proceed to Checkout</a>
+            <!-- Resumen de la orden -->
+            <div class="col-lg-4">
+                <div class="card border-0 p-4" style="background: #222831; color: #ffffff;">
+                    <h4 class="text-left mb-4" style="font-weight: bold;">Resumen</h4>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Artículos:</span>
+                        <span class="fw-bold text-success">@Model.Sum(x => x.Price * x.Quantity).ToString("C")</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Est. Envío:</span>
+                        <span class="fw-bold text-info">$20.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Est. IVA:</span>
+                        <span class="fw-bold text-info">$15.00</span>
+                    </div>
+                    <hr class="text-muted">
+                    <div class="d-flex justify-content-between">
+                        <span>Total:</span>
+                        <span class="fw-bold fs-3 text-warning">@((Model.Sum(x => x.Price * x.Quantity) + 35.00m).ToString("C"))</span>
+                    </div>
+                    <a href="/Cart/Checkout" class="btn btn-lg btn-warning mt-4 w-100 fw-bold shadow" style="background-color: #FF9900; border: none;">Pagar de Forma Segura</a>
+                </div>
+            </div>
         </div>
     }
 </div>
 
-@* Script para manejar la actualización de cantidades y eliminación de artículos *@
+<!-- Script para manejar la actualización de cantidades y eliminación de elementos -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Actualizar cantidad de artículos
         $('.update-quantity').on('change', function () {
             var productId = $(this).data('product-id');
             var quantity = $(this).val();
@@ -78,85 +90,85 @@
                     quantities: { [productId]: quantity }
                 },
                 success: function (response) {
-                    location.reload(); // Recargar la página para reflejar los cambios
+                    if (response.success) {
+                        location.reload(); // Recargar la página para reflejar los cambios
+                    }
                 }
             });
         });
 
-            $('.remove-item').on('click', function () {
-                var productId = $(this).data('product-id');
+        // Eliminar un artículo del carrito
+        $('.remove-item').on('click', function () {
+            var productId = $(this).data('product-id');
 
-                $.ajax({
-                    url: '@Url.Action("RemoveFromCart", "Cart")',
-                    type: 'POST',
-                    data: {
-                        productId: productId
-                    },
-                    success: function (response) {
+            $.ajax({
+                url: '@Url.Action("RemoveItem", "Cart")',
+                type: 'POST',
+                data: {
+                    id: productId
+                },
+                success: function (response) {
+                    if (response.success) {
                         location.reload(); // Recargar la página para reflejar los cambios
                     }
-                });
+                }
             });
         });
+
+        // Eliminar todos los artículos del carrito
+        $('.remove-all-items').on('click', function () {
+            $.ajax({
+                url: '@Url.Action("ClearCart", "Cart")',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        location.reload(); // Recargar la página para reflejar los cambios
+                    }
+                }
+            });
+        });
+    });
 </script>
 
-@* Estilos para mejorar la apariencia de la tabla y los botones *@
+<!-- Estilos personalizados -->
 <style>
     body {
-        background-color: #1c1e21; /* Fondo oscuro para todo el sitio */
-        color: #ffffff;
+        background-color: #1c1e21;
     }
 
-    .table th,
-    .table td {
-        vertical-align: middle;
+    .card {
+        border-radius: 0;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
-
-    .table img {
-        transition: transform 0.3s ease-in-out;
-    }
-
-        .table img:hover {
-            transform: scale(1.1); /* Efecto de agrandamiento al pasar el ratón sobre la imagen */
-        }
 
     .btn-warning {
-        background-color: #DA9D19;
+        background-color: #FF9900;
         border: none;
-        color: #ffffff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: background-color 0.3s, transform 0.3s;
     }
 
-        .btn-warning:hover {
-            background-color: #e68a00;
-            transform: scale(1.05);
-        }
+    .btn-warning:hover {
+        background-color: #e68a00;
+    }
 
-    .btn-danger {
-        background-color: #ff5f5f;
+    .remove-item,
+    .remove-all-items {
+        background-color: #FF4B5C;
         border: none;
-        color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: background-color 0.3s, transform 0.3s;
     }
 
-        .btn-danger:hover {
-            background-color: #e60000;
-            transform: scale(1.05);
-        }
-
-    .shadow {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    .remove-item:hover,
+    .remove-all-items:hover {
+        background-color: #FF3B4C;
     }
 
-    .update-quantity {
-        background-color: #333;
-        color: #ffffff;
-        border-radius: 5px;
+    .btn-outline-light {
+        color: #fff;
+        border-color: #fff;
     }
 
-        .update-quantity::-webkit-inner-spin-button {
-            filter: invert(1);
-        }
+    .btn-outline-light:hover {
+        background-color: #fff;
+        color: #333;
+    }
 </style>

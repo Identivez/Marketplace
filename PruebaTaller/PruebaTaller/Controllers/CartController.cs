@@ -35,15 +35,18 @@ namespace PruebaTaller.Controllers
             ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
             return View(cart.GetItems());
         }
+
         public IActionResult Checkout()
         {
             var model = new List<Cart_Item>();
             return View(model);
         }
+
         public IActionResult Payment()
         {
             return View();
         }
+
         /// <summary>
         /// Agrega un producto al carrito de compras.
         /// </summary>
@@ -89,6 +92,7 @@ namespace PruebaTaller.Controllers
         /// </summary>
         /// <param name="id">El identificador del producto a eliminar.</param>
         /// <returns>Redirige a la vista del carrito actualizado.</returns>
+        [HttpPost]
         public IActionResult RemoveItem(int id)
         {
             // Obtener el carrito de la sesión o crear uno nuevo si no existe
@@ -104,7 +108,27 @@ namespace PruebaTaller.Controllers
             ViewBag.CartItemCount = cart.Items.Sum(item => item.Quantity);
 
             // Redirigir a la vista del carrito
-            return RedirectToAction("Index");
+            return Json(new { success = true });
+        }
+
+        /// <summary>
+        /// Elimina todos los productos del carrito de compras.
+        /// </summary>
+        /// <returns>Redirige a la vista del carrito actualizado.</returns>
+        [HttpPost]
+        public IActionResult ClearCart()
+        {
+            // Crear un nuevo carrito vacío
+            var cart = new ShoppingCart();
+
+            // Guardar el carrito vacío en la sesión
+            HttpContext.Session.SetObjectAsJson("Cart", cart);
+
+            // Actualizar la cantidad de elementos en ViewBag
+            ViewBag.CartItemCount = 0;
+
+            // Redirigir a la vista del carrito
+            return Json(new { success = true });
         }
 
         /// <summary>
@@ -128,7 +152,7 @@ namespace PruebaTaller.Controllers
             HttpContext.Session.SetObjectAsJson("Cart", cart);
 
             // Redirigir al carrito para ver los cambios
-            return RedirectToAction("Index");
+            return Json(new { success = true });
         }
     }
 }
