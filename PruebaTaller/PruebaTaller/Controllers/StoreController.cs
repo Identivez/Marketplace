@@ -71,7 +71,7 @@ namespace GEJ_Lab.Controllers
         /// <returns>Vista con los productos filtrados y paginados.</returns>
         public IActionResult Index(string? search, string? selectedBrand, string? selectedCategory, string? sort, int pageIndex = 1)
         {
-            int pageSize = 4; // Número de productos por página
+            int pageSize =6; // Número de productos por página
             IQueryable<Product> query = _context.Products;
 
             // Filtrado por nombre (búsqueda)

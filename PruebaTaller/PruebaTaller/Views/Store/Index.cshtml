@@ -4,9 +4,9 @@
 }
 
 <!-- Sección principal de la tienda -->
-<div class="bg-dark mt-5" id="Todosproducts">
+<div class="bg-dark mt-5" id="Todosproducts" style="background: linear-gradient(135deg, #1c1e21, #3a3f47);">
     <div class="container py-5">
-        <h2 class="pb-4 text-center text-light display-4">Los Mejores Productos</h2>
+        <h2 class="pb-4 text-center display-4" style="color: #DA9D19;">Los Mejores Productos</h2>
 
         <!-- Formulario de filtros de búsqueda -->
         <form method="get" class="row g-3 mb-4 justify-content-center">
@@ -68,22 +68,29 @@
             {
                 @foreach (var product in Model.Products)
                 {
-                    <div class="col-lg-3 col-md-6">
-                        <div class="product-card rounded border-0 shadow-lg p-4 text-center h-100 bg-light" style="transition: transform 0.3s, box-shadow 0.3s;">
-                            <img src="@Url.Content($"~/images/products/{product.ImageFileName}")" class="img-fluid mb-3" alt="Product Image" style="max-height: 200px; object-fit: cover; border-radius: 10px; transition: transform 0.3s; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));" />
-                            <h5 class="py-2 text-dark fw-bold">@product.Name</h5>
-                            <p class="text-muted">Marca: @product.Brand</p>
-                            <p class="text-muted">Categoría: @product.Category</p>
-                            <h4 class="mb-3 text-success fw-bold">$@product.Price.ToString("F2")</h4>
+                    <div class="col-lg-12">
+                        <div class="product-item d-flex align-items-start rounded border shadow-sm p-4 mb-4" style="background: #2c2f33; color: #ffffff; transition: transform 0.3s, box-shadow 0.3s;">
+                            <!-- Imagen del producto -->
+                            <div class="product-image me-4">
+                                <img src="@Url.Content($"~/images/products/{product.ImageFileName}")" alt="@product.Name" class="img-fluid rounded" style="height: 150px; width: 150px; object-fit: contain; background: #fff; padding: 10px; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));">
+                            </div>
 
-                            <div class="d-grid gap-2">
-                                <a class="btn btn-outline-primary btn-sm mb-2 fw-bold" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" style="border-color: #022398; color: #022398;">Ver Detalles</a>
-                                <a class="btn btn-primary btn-sm mb-2 fw-bold" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id" style="background-color: #DA9D19; border-color: #DA9D19;">
+                            <!-- Información del producto -->
+                            <div class="product-details flex-grow-1">
+                                <h5 class="fw-bold mb-2" style="color: #ffffff;">@product.Name</h5>
+                                <p class="text-muted mb-1">Marca: @product.Brand</p>
+                                <p class="text-muted mb-3">Categoría: @product.Category</p>
+                                <h4 class="text-success fw-bold mb-0">$@product.Price.ToString("F2")</h4>
+                            </div>
+
+                            <!-- Acciones del producto -->
+                            <div class="product-actions ms-auto d-flex flex-column">
+                                <a class="btn btn-outline-primary mb-2 fw-bold product-detail-button" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Ver Detalles</a>
+                                <a class="btn btn-success fw-bold add-to-cart-button" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id">
                                     <i class="bi bi-cart-plus"></i> Añadir al Carrito
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 }
             }
@@ -113,6 +120,7 @@
     </ul>
 </nav>
 
+<!-- Estilos personalizados -->
 <style>
     body {
         background-color: #1c1e21;
@@ -120,27 +128,60 @@
     }
 
     .btn-warning {
-        background-color: #DA9D19;
+        background-color: #007BFF;
         border: none;
         color: #ffffff;
         transition: background-color 0.3s;
     }
 
         .btn-warning:hover {
-            background-color: #e68a00;
+            background-color: #0056b3;
         }
 
-    .product-card:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        transform: scale(1.05);
+    .btn-outline-primary {
+        color: #007BFF;
+        border-color: #007BFF;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
-    .product-card img:hover {
-        transform: scale(1.1);
+        .btn-outline-primary:hover {
+            background-color: #007BFF;
+            color: #ffffff;
+            border-color: #007BFF;
+        }
+
+    .btn-success {
+        background-color: #28A745;
+        border-color: #28A745;
+        color: #ffffff;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1E7E34;
+        }
+
+    .product-item {
+        border: 1px solid #dcdcdc;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+        .product-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02);
+        }
+
+    .product-details {
+        flex-grow: 1;
+    }
+
+    .product-actions a {
+        width: 150px;
+        text-align: center;
     }
 
     .page-item.active .page-link {
-        background-color: #DA9D19;
-        border-color: #DA9D19;
+        background-color: #007BFF;
+        border-color: #007BFF;
     }
 </style>
