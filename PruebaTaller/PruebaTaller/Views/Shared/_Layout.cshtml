@@ -57,9 +57,9 @@
             transition: background-color 0.3s;
         }
 
-        .btn-warning:hover {
-            background-color: #e68a00;
-        }
+            .btn-warning:hover {
+                background-color: #e68a00;
+            }
 
         footer {
             background-color: var(--primary-color);
@@ -69,15 +69,15 @@
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+            footer a {
+                color: var(--accent-color);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
 
-        footer a:hover {
-            color: #ffcc00;
-        }
+                footer a:hover {
+                    color: #ffcc00;
+                }
 
         .badge {
             font-size: 0.8em;
@@ -98,21 +98,68 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
-        .hero-section h1 {
-            font-size: 3.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
+            .hero-section h1 {
+                font-size: 3.5em;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .hero-section p {
+                font-size: 1.5em;
+                margin-bottom: 30px;
+            }
+
+            .hero-section .btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #1c1e21;
+            z-index: 10;
+            border-radius: 0 0 10px 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
 
-        .hero-section p {
-            font-size: 1.5em;
-            margin-bottom: 30px;
-        }
+            .suggestions-box .suggestion-header {
+                font-weight: bold;
+                color: var(--accent-color);
+                padding: 10px;
+                border-bottom: 1px solid #444;
+            }
 
-        .hero-section .btn {
-            padding: 15px 30px;
-            font-size: 1.2em;
-        }
+            .suggestions-box .suggestion-item {
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .suggestions-box .suggestion-item:hover {
+                    background-color: #333;
+                }
+
+            .suggestions-box .product-item {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border-bottom: 1px solid #444;
+            }
+
+                .suggestions-box .product-item img {
+                    height: 50px;
+                    width: 50px;
+                    object-fit: cover;
+                    margin-right: 10px;
+                    border-radius: 5px;
+                }
+
     </style>
 </head>
 <body>
@@ -141,10 +188,33 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ContacUs">Contactanos</a>
                         </li>
                     </ul>
-                    <form class="d-flex me-3 search-bar">
-                        <input class="form-control me-2" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+                    
+                    <form method="get" asp-action="Index" asp-controller="Store" class="d-flex me-3 search-bar">
+                        <!-- Campo de búsqueda -->
+                        <input id="search-input" name="search" class="form-control me-2" type="search" placeholder="Buscar productos..." aria-label="Buscar" value="@(Context.Request.Query["search"])">
+                        <!-- Botón de búsqueda -->
                         <button class="btn btn-outline-light" type="submit">Buscar</button>
                     </form>
+                    <div id="suggestions" class="suggestions-box p-3 rounded">
+                        <!-- Palabras clave coincidentes -->
+                        <div id="matching-keywords" class="mb-4">
+                            <h6 class="suggestion-header text-uppercase mb-2">Sugerencias</h6>
+                            <ul class="list-unstyled" id="keywords-list">
+                                <!-- Aquí se agregan las palabras clave con JavaScript -->
+                            </ul>
+                        </div>
+
+                        <!-- Productos relacionados -->
+                        <div id="recommendations">
+                            <h6 class="suggestion-header text-uppercase mb-2">Productos Relacionados</h6>
+                            <div class="d-flex flex-column gap-3" id="products-list">
+                                <!-- Aquí se agregan los productos relacionados con JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link position-relative" asp-area="" asp-controller="Cart" asp-action="Index">
@@ -156,41 +226,41 @@
                         </li>
                         @if (!SignInManager.IsSignedIn(User))
                         {
-                                    <li class="nav-item">
-                                        <a class="btn btn-outline-light me-2" asp-area="" asp-controller="Account" asp-action="Register">Registrarse</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
-                                    </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-light me-2" asp-area="" asp-controller="Account" asp-action="Register">Registrarse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                            </li>
                         }
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
                         var appUser = await UserManager.GetUserAsync(User);
 
-                                <ul class="navbar-nav">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     @(appUser!.FirstName + " " + appUser!.LastName + (User.IsInRole("admin") ? " (Admin)" : " (Client)"))
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
                                     @if (User.IsInRole("admin"))
                                     {
-                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Productos</a></li>
-                                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminOrders" asp-action="Index">Órdenes</a></li>
-                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Productos</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="AdminOrders" asp-action="Index">Órdenes</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a></li>
                                     }
                                     else if (User.IsInRole("client"))
                                     {
-                                                        <li><a class="dropdown-item" asp-area="" asp-controller="ClientOrders" asp-action="Index">Órdenes</a></li>
-                                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ventas" asp-action="Ventas">Productos</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="ClientOrders" asp-action="Index">Órdenes</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Ventas" asp-action="Ventas">Productos</a></li>
                                     }
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Perfil</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
-                                        </ul>
-                                    </li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Perfil</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
                                 </ul>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div>
@@ -199,15 +269,15 @@
 
     @if (ViewContext.RouteData.Values["action"].ToString() == "Index" && ViewContext.RouteData.Values["controller"].ToString() == "Home")
     {
-            <!-- Hero Section -->
-            <div class="hero-section">
-                <div class="container">
-                    <h1>Bienvenidos a GEJ LAB Marketplace</h1>
-                    <p>Encuentra los mejores productos tecnológicos a precios increíbles.</p>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="container">
+                <h1>Bienvenidos a GEJ LAB Marketplace</h1>
+                <p>Encuentra los mejores productos tecnológicos a precios increíbles.</p>
                 <a href="/Store/Index" class="btn btn-lg" style="background-color: #DA9D19; border-color: #DA9D19; color: #ffffff;">Explorar Productos</a>
 
-                </div>
             </div>
+        </div>
     }
 
     <div class="container mt-4">
@@ -226,6 +296,60 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
+        $(document).ready(function () {
+            // Buscar sugerencias al escribir
+            $('#search-input').on('keyup', function () {
+                const query = $(this).val();
+                if (query.length > 1) {
+                    $.ajax({
+                        url: '/Store/GetSuggestions',
+                        type: 'GET',
+                        data: { search: query },
+                        success: function (data) {
+                            $('#suggestions').show();
+
+                            // Renderizar palabras clave coincidentes
+                            $('#keywords-list').empty();
+                            data.keywords.forEach(keyword => {
+                                $('#keywords-list').append(`<li class="suggestion-item" data-url="/Store/Index?search=${keyword}">${keyword}</li>`);
+                            });
+
+                            // Renderizar productos relacionados
+                            $('#products-list').empty();
+                            data.products.forEach(product => {
+                                $('#products-list').append(`
+                                        <div class="product-item" data-url="${product.detailsUrl}">
+                                            <img src="${product.imageUrl}" alt="${product.name}">
+                                            <div>
+                                                <h6 class="text-light">${product.name}</h6>
+                                                <p class="text-success fw-bold">$${product.price}</p>
+                                            </div>
+                                        </div>
+                                    `);
+                            });
+
+                            // Añadir funcionalidad de clic para redirigir a la vista de detalles del producto
+                            $('.suggestion-item, .product-item').click(function () {
+                                window.location.href = $(this).data('url');
+                            });
+                        }
+                    });
+                } else {
+                    $('#suggestions').hide();
+                }
+            });
+
+            // Ocultar sugerencias cuando se hace clic fuera de la barra de búsqueda
+            $(document).click(function (e) {
+                if (!$(e.target).closest('.search-bar').length) {
+                    $('#suggestions').hide();
+                }
+            });
+        });
+    </script>
+
+
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             const cartCountElement = document.getElementById("cart-count");
             if (cartCountElement && parseInt(cartCountElement.textContent) === 0) {
@@ -235,6 +359,7 @@
             }
         });
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
     @using Microsoft.AspNetCore.Identity
     @inject SignInManager<ApplicationUser> SignInManager

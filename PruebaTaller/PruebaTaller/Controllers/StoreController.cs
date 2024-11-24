@@ -71,22 +71,24 @@ namespace GEJ_Lab.Controllers
         /// <returns>Vista con los productos filtrados y paginados.</returns>
         public IActionResult Index(string? search, string? selectedBrand, string? selectedCategory, string? sort, int pageIndex = 1)
         {
-            int pageSize =6; // Número de productos por página
+            int pageSize = 6; // Número de productos por página
             IQueryable<Product> query = _context.Products;
 
-            // Filtrado por nombre (búsqueda)
+            // Filtrado general por nombre, marca o categoría
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(p => p.Name.Contains(search));
+                query = query.Where(p => p.Name.Contains(search) ||
+                                         p.Brand.Contains(search) ||
+                                         p.Category.Contains(search));
             }
 
-            // Filtrado por marca
+            // Filtrado por marca (opcional)
             if (!string.IsNullOrEmpty(selectedBrand))
             {
                 query = query.Where(p => p.Brand == selectedBrand);
             }
 
-            // Filtrado por categoría
+            // Filtrado por categoría (opcional)
             if (!string.IsNullOrEmpty(selectedCategory))
             {
                 query = query.Where(p => p.Category == selectedCategory);
@@ -137,5 +139,37 @@ namespace GEJ_Lab.Controllers
 
             return View(storeSearchModel);
         }
+        [HttpGet]
+        public JsonResult GetSuggestions(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return Json(new { keywords = new List<string>(), products = new List<object>() });
+            }
+
+            var keywords = _context.Products
+                .Where(p => p.Name.Contains(search) || p.Brand.Contains(search) || p.Category.Contains(search))
+                .Select(p => p.Name)
+                .Distinct()
+                .Take(10)
+                .ToList();
+
+            var products = _context.Products
+                .Where(p => p.Name.Contains(search) || p.Brand.Contains(search) || p.Category.Contains(search))
+                .Select(p => new
+                {
+                    name = p.Name,
+                    price = p.Price,
+                    imageUrl = Url.Content($"~/images/products/{p.ImageFileName}"),
+                    detailsUrl = Url.Action("Details", "Store", new { id = p.Id })
+                })
+                .Take(5)
+                .ToList();
+
+            return Json(new { keywords, products });
+        }
+
+
+
     }
 }
