@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PruebaTaller.Models
 {
@@ -10,54 +11,58 @@ namespace PruebaTaller.Models
     public class Product
     {
         /// <summary>
-        /// Obtiene o establece el ID del producto.
+        /// Identificador único del producto.
         /// </summary>
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ProductId { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre del producto.
-        /// Longitud máxima de 100 caracteres.
+        /// Nombre del producto.
         /// </summary>
+        [Required]
         [MaxLength(100)]
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Obtiene o establece la marca del producto.
-        /// Longitud máxima de 100 caracteres.
+        /// Marca del producto.
         /// </summary>
+        [Required]
         [MaxLength(100)]
-        public string Brand { get; set; } = "";
+        public string Brand { get; set; } = string.Empty;
 
         /// <summary>
-        /// Obtiene o establece la categoría del producto.
-        /// Longitud máxima de 100 caracteres.
+        /// Precio del producto, con dos decimales.
         /// </summary>
-        [MaxLength(100)]
-        public string Category { get; set; } = "";
-
-        /// <summary>
-        /// Obtiene o establece el precio del producto con una precisión de 16 dígitos y 2 decimales.
-        /// </summary>
-        [Precision(16, 2)]
+        [Required]
+        [Column(TypeName = "decimal(16, 2)")]
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Obtiene o establece la descripción del producto.
-        /// Campo obligatorio.
+        /// Descripción detallada del producto.
         /// </summary>
         [Required]
-        public string Description { get; set; } = "";
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
-        /// Obtiene o establece el nombre del archivo de imagen asociado con el producto.
-        /// Longitud máxima de 100 caracteres.
+        /// Nombre del archivo de imagen asociado con el producto.
         /// </summary>
+        [Required]
         [MaxLength(100)]
-        public string ImageFileName { get; set; } = "";
+        public string ImageFileName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Obtiene o establece la fecha y hora de creación del producto.
+        /// Fecha de creación del registro del producto.
+        /// Por defecto se inicializa con la fecha y hora actual.
         /// </summary>
-        public DateTime CreatedAt { get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Cantidad de stock disponible del producto.
+        /// </summary>
+        [Required]
+        public int Stock { get; set; }
     }
 }

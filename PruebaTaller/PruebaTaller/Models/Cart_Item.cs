@@ -1,4 +1,7 @@
-﻿namespace PruebaTaller.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace PruebaTaller.Models
 {
     /// <summary>
     /// Clase que representa un artículo en el carrito de compras.
@@ -8,34 +11,52 @@
     public class Cart_Item
     {
         /// <summary>
-        /// Obtiene o establece el ID del producto asociado con el artículo del carrito.
+        /// Identificador del usuario al que pertenece el artículo del carrito.
         /// </summary>
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// Referencia al usuario asociado con el artículo del carrito.
+        /// </summary>
+        public virtual ApplicationUser? User { get; set; }
+
+        /// <summary>
+        /// Identificador del producto asociado con el artículo del carrito.
+        /// </summary>
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre del producto.
+        /// Referencia al producto asociado con el artículo del carrito.
         /// </summary>
-        public string Name { get; set; }
+        public virtual Product? Product { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el precio unitario del producto.
+        /// Nombre del producto asociado con el artículo del carrito.
         /// </summary>
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Precio unitario del producto.
+        /// </summary>
+        [Required]
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Obtiene o establece el nombre del archivo de imagen asociado con el producto.
+        /// Cantidad del producto que se está comprando.
         /// </summary>
-        public string ImageFileName { get; set; }
-
-        /// <summary>
-        /// Obtiene o establece la cantidad de unidades del producto en el carrito.
-        /// </summary>
+        [Required]
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Obtiene el precio total del artículo en el carrito.
-        /// Calcula el precio multiplicando el precio unitario por la cantidad.
+        /// Precio total del artículo en el carrito, calculado como precio unitario por cantidad.
         /// </summary>
-        public decimal TotalPrice => Price * Quantity;
+        [Required]
+        [Column(TypeName = "decimal(10, 2)")]
+        public decimal TotalPrice { get; set; }
     }
 }
