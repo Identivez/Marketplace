@@ -32,6 +32,13 @@ namespace PruebaTaller.Models
         public string Brand { get; set; } = string.Empty;
 
         /// <summary>
+        /// Categoría del producto.
+        /// </summary>
+        [Required]
+        [MaxLength(100)]
+        public string Category { get; set; } = string.Empty;
+
+        /// <summary>
         /// Precio del producto, con dos decimales.
         /// </summary>
         [Required]

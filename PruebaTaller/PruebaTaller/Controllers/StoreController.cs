@@ -36,7 +36,7 @@ namespace GEJ_Lab.Controllers
         public IActionResult Details(int id)
         {
             // Buscar el producto por su ID
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
 
             if (product == null)
             {
@@ -45,7 +45,7 @@ namespace GEJ_Lab.Controllers
 
             // Obtener productos relacionados de la misma categoría (excluyendo el producto actual)
             var relatedProducts = _context.Products
-                .Where(p => p.Category == product.Category && p.Id != id)
+                .Where(p => p.Category == product.Category && p.ProductId != id)
                 .Take(4)
                 .ToList();
 
@@ -105,7 +105,7 @@ namespace GEJ_Lab.Controllers
                     break;
                 case "newest":
                 default:
-                    query = query.OrderByDescending(p => p.Id);
+                    query = query.OrderByDescending(p => p.ProductId);
                     break;
             }
 
@@ -161,7 +161,7 @@ namespace GEJ_Lab.Controllers
                     name = p.Name,
                     price = p.Price,
                     imageUrl = Url.Content($"~/images/products/{p.ImageFileName}"),
-                    detailsUrl = Url.Action("Details", "Store", new { id = p.Id })
+                    detailsUrl = Url.Action("Details", "Store", new { id = p.ProductId })
                 })
                 .Take(5)
                 .ToList();

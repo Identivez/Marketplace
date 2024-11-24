@@ -55,7 +55,7 @@ namespace PruebaTaller.Controllers
         public IActionResult AddToCart(int id)
         {
             // Buscar el producto por su ID en la base de datos
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
             if (product == null)
             {
                 return NotFound();
@@ -67,7 +67,7 @@ namespace PruebaTaller.Controllers
             // Crear un nuevo ítem de carrito con el producto seleccionado
             var cartItem = new Cart_Item
             {
-                ProductId = product.Id,
+                ProductId = product.ProductId,
                 Name = product.Name,
                 Price = product.Price,
                 ImageFileName = product.ImageFileName,

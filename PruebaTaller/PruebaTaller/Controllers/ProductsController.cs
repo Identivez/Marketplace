@@ -49,7 +49,7 @@ namespace PruebaTaller.Controllers
             }
 
             // Ordenar los productos de forma descendente por ID
-            query = query.OrderByDescending(p => p.Id);
+            query = query.OrderByDescending(p => p.ProductId);
 
             // Paginación
             if (pageIndex < 1)
@@ -146,7 +146,7 @@ namespace PruebaTaller.Controllers
 
             var productDto = new ProductDTOO()
             {
-                Id = product.Id,
+                Id = product.ProductId,
                 Name = product.Name,
                 Brand = product.Brand,
                 Category = product.Category,
@@ -330,7 +330,7 @@ namespace PruebaTaller.Controllers
         /// <returns>Vista con los detalles del producto, o redirige si no se encuentra.</returns>
         public IActionResult Details(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
 
             if (product == null)
             {

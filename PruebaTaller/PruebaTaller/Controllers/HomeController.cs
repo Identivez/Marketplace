@@ -30,7 +30,7 @@ namespace PruebaTaller.Controllers
         public IActionResult Index()
         {
             // Obtiene los 4 productos más recientes ordenados por su ID de forma descendente.
-            var products = _context.Products.OrderByDescending(p => p.Id).Take(6).ToList();
+            var products = _context.Products.OrderByDescending(p => p.ProductId).Take(6).ToList();
             return View(products);
         }
 

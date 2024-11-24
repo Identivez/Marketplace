@@ -53,6 +53,13 @@ namespace PruebaTaller.Models
         public int Quantity { get; set; }
 
         /// <summary>
+        /// Nombre del archivo de imagen del producto asociado con el artículo del carrito.
+        /// </summary>
+        [Required]
+        [MaxLength(100)]
+        public string ImageFileName { get; set; } = string.Empty;
+
+        /// <summary>
         /// Precio total del artículo en el carrito, calculado como precio unitario por cantidad.
         /// </summary>
         [Required]
