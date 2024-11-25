@@ -55,6 +55,14 @@ namespace PruebaTaller.Models
         public IFormFile? ImageFile { get; set; }
 
         /// <summary>
+        /// Obtiene o establece el stock del producto.
+        /// Campo requerido con un valor mínimo de 0.
+        /// </summary>
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock must be equal to or greater than 0.")]
+        public int Stock { get; set; }
+
+        /// <summary>
         /// Obtiene o establece la fecha y hora de creación del producto.
         /// </summary>
         public DateTime CreatedAt { get; set; }

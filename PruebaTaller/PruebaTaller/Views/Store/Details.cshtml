@@ -29,14 +29,27 @@
                 <p style="color: #FF6347; font-style: italic;">Incluye todos los impuestos</p> <!-- Texto más llamativo y con estilo cursivo -->
             </div>
             <p style="color: #E1E1E1; font-size: 1.1rem; line-height: 1.6;">@Model.Product.Description</p> <!-- Color de descripción mejorado y mayor legibilidad -->
+            <!-- Mostrar información de stock -->
+            @if (Model.Product.Stock > 0)
+            {
+                <p class="fw-bold" style="color: #28A745;">Disponible: <strong>@Model.Product.Stock unidades</strong></p>
+            }
+            else
+            {
+                <p class="fw-bold" style="color: #DC3545;">Producto sin stock disponible</p>
+            }
 
             <div class="d-grid gap-3 mb-4">
                 <!-- Botón para agregar al carrito -->
-                <a class="btn btn-primary btn-lg fw-bold shadow" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.ProductId" style="background-color: #FF9F00; border-color: #FF9F00; color: #ffffff;">
+                <a class="btn btn-primary btn-lg fw-bold shadow @(Model.Product.Stock == 0 ? "disabled" : "")"
+                   asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.ProductId"
+                   style="background-color: #FF9F00; border-color: #FF9F00; color: #ffffff;">
                     <i class="bi bi-cart-plus"></i> Añadir al Carrito
                 </a>
                 <!-- Botón de compra ahora -->
-                <a  class="btn btn-outline-light btn-lg fw-bold shadow" asp-controller="Cart" asp-action="Checkout" asp-route-id="@Model.Product.ProductId" style="border-color: #ff9f00; color: #ff9f00;">
+                <a class="btn btn-outline-light btn-lg fw-bold shadow @(Model.Product.Stock == 0 ? "disabled" : "")"
+                   asp-controller="Cart" asp-action="Checkout" asp-route-id="@Model.Product.ProductId"
+                   style="border-color: #ff9f00; color: #ff9f00;">
                     <i class="bi bi-lightning-fill"></i> Comprar Ahora
                 </a>
                 <!-- Botón para volver a la tienda -->
@@ -45,8 +58,6 @@
                 </a>
             </div>
         </div>
-
-
     </div>
 
     <!-- Productos relacionados -->
@@ -64,7 +75,6 @@
                             <a href="@Url.Action("Details", "Store", new { id = relatedProduct.ProductId })" class="btn btn-outline-light btn-sm">Ver Detalles</a>
                         </div>
                     </div>
-
                 </div>
             }
         </div>

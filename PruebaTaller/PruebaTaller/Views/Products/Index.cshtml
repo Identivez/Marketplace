@@ -20,7 +20,6 @@
     </div>
 }
 
-
 <h2 class="text-center mb-5">List of Products</h2>
 
 <div class="row mb-5">
@@ -43,6 +42,7 @@
             <th>Brand</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Stock</th> <!-- Nueva columna de Stock -->
             <th>Image</th>
             <th>Created At</th>
             <th>Action</th>
@@ -57,11 +57,10 @@
                 <td>@product.Brand</td>
                 <td>@product.Category</td>
                 <td>@(product.Price)$</td>
+                <td>@product.Stock</td> <!-- Nueva celda para mostrar el Stock -->
                 <td>
                     <img src="/images/products/@product.ImageFileName" alt="Product Image" width="100" onerror="this.onerror=null; this.src='/images/placeholder.png';" />
                 </td>
-
-
                 <td>@product.CreatedAt.ToString("MM/dd/yyyy")</td>
                 <td style="white-space:nowrap">
                     <a class="btn btn-primary btn-sm" asp-controller="Products" asp-action="Edit"

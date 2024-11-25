@@ -269,11 +269,13 @@ namespace PruebaTaller.Controllers
                             string priceStr = worksheet.Cells[row, 4].Value?.ToString()?.Trim() ?? string.Empty;
                             string description = worksheet.Cells[row, 5].Value?.ToString()?.Trim() ?? string.Empty;
                             string imageFileName = worksheet.Cells[row, 6].Value?.ToString()?.Trim() ?? string.Empty;
+                            string stockStr = worksheet.Cells[row, 7].Value?.ToString()?.Trim() ?? string.Empty;
 
                             // Validaciones y procesamiento de datos
                             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(brand) || string.IsNullOrEmpty(category) ||
                                 string.IsNullOrEmpty(priceStr) || !decimal.TryParse(priceStr, out decimal price) || price < 0 ||
-                                string.IsNullOrEmpty(description) || string.IsNullOrEmpty(imageFileName))
+                                string.IsNullOrEmpty(description) || string.IsNullOrEmpty(imageFileName) ||
+                                string.IsNullOrEmpty(stockStr) || !int.TryParse(stockStr, out int stock) || stock < 0)
                             {
                                 errorMessages.Add($"Row {row}: Missing or invalid required data.");
                                 continue;
@@ -297,6 +299,7 @@ namespace PruebaTaller.Controllers
                                 Price = price,
                                 Description = description,
                                 ImageFileName = imageFileName,
+                                Stock = stock, // Nuevo campo agregado
                                 CreatedAt = DateTime.Now
                             };
 
@@ -322,6 +325,7 @@ namespace PruebaTaller.Controllers
 
             return RedirectToAction("Index");
         }
+
 
         /// <summary>
         /// Muestra los detalles de un producto específico.
