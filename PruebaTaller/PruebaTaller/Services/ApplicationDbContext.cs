@@ -13,7 +13,9 @@ namespace PruebaTaller.Services
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }   
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        
+        public DbSet<ShippingDetails> ShippingDetails { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

@@ -43,5 +43,6 @@ namespace GEJ_Lab.Models
         public virtual Payment? Payment { get; set; }
 
         public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
+        public virtual ShippingDetails? ShippingDetails { get; set; }
     }
 }
