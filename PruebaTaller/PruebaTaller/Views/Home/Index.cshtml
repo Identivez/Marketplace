@@ -36,7 +36,7 @@
             @foreach (var product in Model)
 
             {
-                <div class="dynamic-item" style="grid-column: span @(product.Id % 3 == 0 ? 2 : 1);">
+                <div class="dynamic-item" style="grid-column: span @(product.ProductId % 3 == 0 ? 2 : 1);">
                     <div class="product-card rounded border shadow-sm p-4 text-center" style="background: #2c2f33; color: #ffffff; transition: transform 0.5s, box-shadow 0.5s;">
                         <div class="image-container" style="height: 250px;">
                             <img src="@Url.Content($"~/images/products/{product.ImageFileName}")" class="img-fluid mb-3" alt="Product Image" style="max-height: 100%; object-fit: contain; border-radius: 15px; background: #fff; padding: 10px;">
@@ -46,8 +46,8 @@
                         <p class="text-muted mb-1">Marca: @product.Brand</p>
                         <p class="text-muted mb-3">Categoría: @product.Category</p>
                         <div class="d-grid gap-2">
-                            <a class="btn btn-outline-info btn-sm fw-bold" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Ver Detalles</a>
-                            <a class="btn btn-warning btn-sm fw-bold" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id">
+                            <a class="btn btn-outline-info btn-sm fw-bold" asp-controller="Store" asp-action="Details" asp-route-id="@product.ProductId" role="button">Ver Detalles</a>
+                            <a class="btn btn-warning btn-sm fw-bold" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.ProductId">
                                 <i class="bi bi-cart-plus"></i> Añadir al Carrito
                             </a>
                         </div>

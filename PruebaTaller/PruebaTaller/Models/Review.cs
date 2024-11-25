@@ -26,18 +26,20 @@ namespace GEJ_Lab.Models
         /// <summary>
         /// Referencia al producto asociado con la reseña.
         /// </summary>
-        public virtual Product? Product { get; set; }
+        [Required]
+        public virtual Product Product { get; set; } = null!;
 
         /// <summary>
         /// Identificador del usuario que realizó la reseña.
         /// </summary>
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty; // Cambiado a string para ser compatible con `ApplicationUser`
 
         /// <summary>
         /// Referencia al usuario que realizó la reseña.
         /// </summary>
-        public virtual ApplicationUser? User { get; set; }
+        [Required]
+        public virtual ApplicationUser User { get; set; } = null!;
 
         /// <summary>
         /// Calificación del producto, entre 1 y 5.

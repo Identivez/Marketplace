@@ -79,8 +79,8 @@
 
                             <!-- Acciones del producto -->
                             <div class="product-actions ms-auto d-flex flex-column">
-                                <a class="btn btn-outline-primary mb-2 fw-bold product-detail-button" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Ver Detalles</a>
-                                <a class="btn btn-success fw-bold add-to-cart-button" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id">
+                                <a class="btn btn-outline-primary mb-2 fw-bold product-detail-button" asp-controller="Store" asp-action="Details" asp-route-id="@product.ProductId" role="button">Ver Detalles</a>
+                                <a class="btn btn-success fw-bold add-to-cart-button" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.ProductId">
                                     <i class="bi bi-cart-plus"></i> Añadir al Carrito
                                 </a>
                             </div>

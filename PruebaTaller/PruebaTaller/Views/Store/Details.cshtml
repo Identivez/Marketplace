@@ -32,11 +32,11 @@
 
             <div class="d-grid gap-3 mb-4">
                 <!-- Botón para agregar al carrito -->
-                <a class="btn btn-primary btn-lg fw-bold shadow" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.Id" style="background-color: #FF9F00; border-color: #FF9F00; color: #ffffff;">
+                <a class="btn btn-primary btn-lg fw-bold shadow" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.ProductId" style="background-color: #FF9F00; border-color: #FF9F00; color: #ffffff;">
                     <i class="bi bi-cart-plus"></i> Añadir al Carrito
                 </a>
                 <!-- Botón de compra ahora -->
-                <a  class="btn btn-outline-light btn-lg fw-bold shadow" asp-controller="Cart" asp-action="Checkout" asp-route-id="@Model.Product.Id" style="border-color: #ff9f00; color: #ff9f00;">
+                <a  class="btn btn-outline-light btn-lg fw-bold shadow" asp-controller="Cart" asp-action="Checkout" asp-route-id="@Model.Product.ProductId" style="border-color: #ff9f00; color: #ff9f00;">
                     <i class="bi bi-lightning-fill"></i> Comprar Ahora
                 </a>
                 <!-- Botón para volver a la tienda -->
@@ -61,7 +61,7 @@
                         <div class="card-body text-center">
                             <h5 class="card-title text-light">@relatedProduct.Name</h5>
                             <p class="card-text text-success fw-bold">$@relatedProduct.Price.ToString("F2")</p>
-                            <a href="@Url.Action("Details", "Store", new { id = relatedProduct.Id })" class="btn btn-outline-light btn-sm">Ver Detalles</a>
+                            <a href="@Url.Action("Details", "Store", new { id = relatedProduct.ProductId })" class="btn btn-outline-light btn-sm">Ver Detalles</a>
                         </div>
                     </div>
 

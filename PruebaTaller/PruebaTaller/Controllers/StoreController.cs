@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GEJ_Lab.Migrations;
+
 using PruebaTaller.Services;
 using System.Linq;
 using PruebaTaller.Models;

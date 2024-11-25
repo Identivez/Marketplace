@@ -26,7 +26,8 @@ namespace GEJ_Lab.Models
         /// <summary>
         /// Referencia al pedido asociado a estos detalles.
         /// </summary>
-        public virtual Order? Order { get; set; }
+        [Required]
+        public virtual Order Order { get; set; } = null!;
 
         /// <summary>
         /// Identificador del producto asociado con el pedido.
@@ -37,7 +38,8 @@ namespace GEJ_Lab.Models
         /// <summary>
         /// Referencia al producto asociado con los detalles del pedido.
         /// </summary>
-        public virtual Product? Product { get; set; }
+        [Required]
+        public virtual Product Product { get; set; } = null!;
 
         /// <summary>
         /// Cantidad de unidades del producto en el pedido.
@@ -49,7 +51,7 @@ namespace GEJ_Lab.Models
         /// Precio unitario del producto.
         /// </summary>
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal UnitPrice { get; set; }
 
         /// <summary>

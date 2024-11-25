@@ -11,15 +11,22 @@ namespace PruebaTaller.Models
     public class Cart_Item
     {
         /// <summary>
+        /// Identificador único del artículo del carrito.
+        /// </summary>
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int CartItemId { get; set; } // Llave primaria para `Cart_Item`
+
+        /// <summary>
         /// Identificador del usuario al que pertenece el artículo del carrito.
         /// </summary>
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty; // Cambiado a string para ser compatible con `ApplicationUser`
 
         /// <summary>
         /// Referencia al usuario asociado con el artículo del carrito.
         /// </summary>
-        public virtual ApplicationUser? User { get; set; }
+        public virtual ApplicationUser User { get; set; } = null!;
 
         /// <summary>
         /// Identificador del producto asociado con el artículo del carrito.
@@ -30,7 +37,7 @@ namespace PruebaTaller.Models
         /// <summary>
         /// Referencia al producto asociado con el artículo del carrito.
         /// </summary>
-        public virtual Product? Product { get; set; }
+        public virtual Product Product { get; set; } = null!;
 
         /// <summary>
         /// Nombre del producto asociado con el artículo del carrito.

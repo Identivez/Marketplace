@@ -52,7 +52,7 @@
         @foreach (var product in Model)
         {
             <tr>
-                <td>@product.Id</td>
+                <td>@product.ProductId</td>
                 <td>@product.Name</td>
                 <td>@product.Brand</td>
                 <td>@product.Category</td>
@@ -65,9 +65,9 @@
                 <td>@product.CreatedAt.ToString("MM/dd/yyyy")</td>
                 <td style="white-space:nowrap">
                     <a class="btn btn-primary btn-sm" asp-controller="Products" asp-action="Edit"
-                       asp-route-id="@product.Id">Edit</a>
+                       asp-route-id="@product.ProductId">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-controller="Products" asp-action="Delete"
-                       asp-route-id="@product.Id">Delete</a>
+                       asp-route-id="@product.ProductId">Delete</a>
                 </td>
             </tr>
         }
