@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PruebaTaller.Models;
 using PruebaTaller.Services;
+using GEJ_Lab.Models; // Agrega el namespace de PayPalService
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,6 +37,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddSingleton<PayPalService>();
+
+builder.Services.AddSingleton<PayPalService>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    return new PayPalService(configuration); // Pasamos IConfiguration al servicio
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,7 +55,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication(); // Asegurarse de agregar autenticación
+app.UseAuthentication(); // Asegúrate de agregar autenticación
 app.UseAuthorization();
 
 // Agregar el middleware de sesión
@@ -67,6 +75,5 @@ using (var scope = app.Services.CreateScope())
 
     await DatabaseInitializer.SeedDataAsync(userManager, roleManager);
 }
-
 
 app.Run();

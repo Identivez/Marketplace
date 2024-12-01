@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GEJ_Lab.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PruebaTaller.Models;
 using PruebaTaller.Services;
@@ -14,14 +15,17 @@ namespace PruebaTaller.Controllers
     {
         // Contexto de base de datos para interactuar con los productos
         private readonly ApplicationDbContext _context;
-
+       
+        private readonly IConfiguration configuration;
         /// <summary>
         /// Constructor que inicializa el controlador con el contexto de base de datos.
         /// </summary>
         /// <param name="context">El contexto de la base de datos de la aplicación.</param>
+
         public CartController(ApplicationDbContext context)
         {
             _context = context;
+           
         }
 
         /// <summary>
@@ -36,16 +40,55 @@ namespace PruebaTaller.Controllers
             return View(cart.GetItems());
         }
 
+        //public IActionResult Checkout()
+        //{
+        //    var model = new List<Cart_Item>();
+        //    return View(model);
+        //}
+        [HttpGet]
         public IActionResult Checkout()
         {
-            var model = new List<Cart_Item>();
-            return View(model);
-        }
+            var cart = GetCartFromSession();  // Asumimos que esta función obtiene el carrito de la sesión
 
-        public IActionResult Payment()
-        {
-            return View();
+            if (!cart.Items.Any())  // Verificamos si el carrito está vacío
+            {
+                TempData["ErrorMessage"] = "El carrito está vacío. Agrega productos antes de proceder al pago.";
+                return RedirectToAction("Index");
+            }
+
+            // Calcular el subtotal, costo de envío y total
+            var subtotal = cart.Items.Sum(item => item.Price * item.Quantity);
+            var shippingCost = 20.00m;  // Costo fijo de envío (puede ser calculado dinámicamente si es necesario)
+            var totalAmount = subtotal + shippingCost;
+            // Total general (subtotal + envío)
+
+            ViewBag.TotalAmount = totalAmount;
+
+            // Crear el DTO para pasar la información a la vista
+            var shippingDetailsDTO = new ShippingDetailsDTO
+            {
+                Items = cart.GetItems(),
+                Subtotal = subtotal,
+                ShippingCost = shippingCost,
+                TotalAmount = totalAmount  // Total final con envío
+            };
+
+            // Pasamos el total a ViewBag para usarlo en JavaScript para el botón de PayPal
+
+
+            return View(shippingDetailsDTO);
         }
+        private ShoppingCart GetCartFromSession()
+        {
+            var cart = HttpContext.Session.GetObjectFromJson<ShoppingCart>("Cart");
+            if (cart == null)
+            {
+                cart = new ShoppingCart();
+                HttpContext.Session.SetObjectAsJson("Cart", cart);
+            }
+            return cart;
+        }
+       
 
         /// <summary>
         /// Agrega un producto al carrito de compras.

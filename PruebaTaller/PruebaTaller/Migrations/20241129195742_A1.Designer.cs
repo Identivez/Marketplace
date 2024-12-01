@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PruebaTaller.Services;
 
@@ -11,9 +12,11 @@ using PruebaTaller.Services;
 namespace GEJ_Lab.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241129195742_A1")]
+    partial class A1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,31 +99,6 @@ namespace GEJ_Lab.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
-                });
-
-            modelBuilder.Entity("GEJ_Lab.Models.PayPalSettings", b =>
-                {
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Environment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Secret")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TokenUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("PayPalSettings");
                 });
 
             modelBuilder.Entity("GEJ_Lab.Models.Payment", b =>
@@ -392,20 +370,6 @@ namespace GEJ_Lab.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("PaymentData", b =>
-                {
-                    b.Property<string>("orderId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("payerId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("paymentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("PaymentData");
                 });
 
             modelBuilder.Entity("PruebaTaller.Models.ApplicationUser", b =>

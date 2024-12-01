@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Order Creation Failed";
+}
+
+<div class="container my-5">
+    <h2 class="text-center display-4 mb-5" style="color: #DA9D19; text-shadow: 2px 2px #000;">Order Creation Failed</h2>
+
+    <!-- Mensaje de error -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="alert alert-danger" role="alert">
+                <strong>Oops!</strong> There was an error while creating your order. Please try again later or contact support for assistance.
+            </div>
+        </div>
+    </div>
+
+    <!-- Opciones para el usuario -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <p class="lead">What would you like to do next?</p>
+
+            <!-- Botón para volver al carrito -->
+            <a href="/Cart/Index" class="btn btn-warning btn-lg">
+                <i class="bi bi-cart"></i> Return to Cart
+            </a>
+
+            <!-- Botón para regresar al inicio -->
+            <a href="/" class="btn btn-primary btn-lg ml-2">
+                <i class="bi bi-house-door"></i> Go to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+    body {
+        background-color: #1c1e21;
+        color: #E6FBFA;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-radius: 5px;
+        border: 1px solid #f5c6cb;
+    }
+
+    .btn-warning {
+        background-color: #DA9D19;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .btn-warning:hover {
+        background-color: #e68a00;
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .container {
+        max-width: 800px;
+        margin-top: 50px;
+    }
+</style>

@@ -1,4 +1,4 @@
-﻿@* @{
+﻿@{
     ViewData["Title"] = "Payment";
 }
 
@@ -158,47 +158,47 @@
 <script src="https://www.paypal.com/sdk/js?client-id=Afbj9DqPgOcWa9rc8FIVSq6AMWFIizLaXmhwOiskli1JQWHy2hNWPjPUGnHmisy9-FEuoOQkD1wJmnaE&currency=USD"></script>
 
 <script>
-    paypal.Buttons({
-        createOrder: function (data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: '100.00' // Puedes hacerlo dinámico desde el servidor
-                    }
-                }]
-            });
-        },
-        onApprove: function (data, actions) {
-            return actions.order.capture().then(function (details) {
-                console.log("Pago aprobado:", details);
+   paypal.Buttons({
+    createOrder: function(data, actions) {
+        return actions.order.create({
+            purchase_units: [{
+                amount: {
+                    value: '100.00'  // Este valor puede ser dinámico
+                }
+            }]
+        });
+    },
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            console.log("Pago aprobado:", details);
 
-                var paymentData = {
-                    paymentId: data.paymentID,
-                    payerId: data.payerID,
-                    orderId: "12345" // Ajusta para usar el ID real de la orden
-                };
+            var paymentData = {
+                paymentId: data.paymentID,
+                payerId: data.payerID,
+                orderId: "12345"  // Asegúrate de pasar el ID real de la orden aquí
+            };
 
-                fetch('/Order/CompleteOrder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(paymentData)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        window.location.href = '/Order/OrderCompleted';
-                    })
-                    .catch(error => {
-                        console.error('Error al procesar el pago:', error);
-                        window.location.href = '/Order/PaymentError';
-                    });
+            fetch('/Order/CompleteOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/Order/OrderCompleted'; // Redirigir al usuario después de completar la orden
+            })
+            .catch(error => {
+                console.error('Error al procesar el pago:', error);
+                window.location.href = '/Order/PaymentError';  // Redirige a la página de error si algo falla
             });
-        },
-        onCancel: function (data) {
-            console.log('El pago fue cancelado');
-            window.location.href = '/Order/CancelOrder';
-        }
-    }).render('#paypal-button-container');
+        });
+    },
+    onCancel: function(data) {
+        console.log('El pago fue cancelado');
+        window.location.href = '/Order/CancelOrder';  // Redirige a la página de cancelación si el usuario cancela el pago
+    }
+}).render('#paypal-button-container'); // Renderiza el botón de PayPal
+
 </script>
- *@

@@ -25,7 +25,7 @@ namespace GEJ_Lab.Models
 
         [Required]
         [MaxLength(50)]
-        public string PaymentMethod { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = "PayPal";
 
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
@@ -33,12 +33,19 @@ namespace GEJ_Lab.Models
 
         [Required]
         [MaxLength(20)]
-        public string PaymentStatus { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = "Pending"; // Estado por defecto
 
         [Required]
         public DateTime TransactionDate { get; set; }
 
         [MaxLength(50)]
-        public string? PaymentProvider { get; set; }
+        public string? PaymentProvider { get; set; } = "PayPal";
+
+        // Nuevos campos específicos de PayPal
+        [MaxLength(100)]
+        public string PayPalPaymentId { get; set; } = string.Empty; // ID de la transacción de PayPal
+
+        [MaxLength(50)]
+        public string PayPalPayerId { get; set; } = string.Empty; // ID del pagador
     }
 }
