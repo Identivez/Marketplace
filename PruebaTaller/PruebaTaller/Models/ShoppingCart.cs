@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PruebaTaller.Services;
+﻿using System.Linq;
 
 namespace PruebaTaller.Models
 {
@@ -26,9 +24,11 @@ namespace PruebaTaller.Models
             if (existingItem != null)
             {
                 existingItem.Quantity += item.Quantity; // Incrementar cantidad si ya existe
+                existingItem.TotalPrice = existingItem.Quantity * existingItem.Price; // Recalcula el total
             }
             else
             {
+                item.TotalPrice = item.Quantity * item.Price; // Calcula el total del nuevo ítem
                 Items.Add(item);
             }
         }
@@ -43,8 +43,8 @@ namespace PruebaTaller.Models
         }
 
         /// <summary>
-        /// Elimina un artículo del carrito de compras o decrementa su cantidad.
-        /// Si la cantidad del artículo es mayor a 1, la decrementa; si es 1, lo elimina del carrito.
+        /// Elimina un artículo del carrito de compras.
+        /// Si la cantidad del artículo es mayor a 1, decrementa su cantidad; si es 1, lo elimina del carrito.
         /// </summary>
         /// <param name="productId">El ID del producto que se desea eliminar o decrementar.</param>
         public void RemoveItem(int productId)
@@ -52,14 +52,7 @@ namespace PruebaTaller.Models
             var existingItem = Items.FirstOrDefault(i => i.ProductId == productId);
             if (existingItem != null)
             {
-                if (existingItem.Quantity > 1)
-                {
-                    existingItem.Quantity--; // Decrementa la cantidad
-                }
-                else
-                {
-                    Items.Remove(existingItem); // Elimina el ítem si la cantidad es 1
-                }
+                Items.Remove(existingItem); // Elimina el ítem del carrito
             }
         }
 
@@ -75,11 +68,48 @@ namespace PruebaTaller.Models
             if (existingItem != null && quantity > 0)
             {
                 existingItem.Quantity = quantity;
+                existingItem.TotalPrice = existingItem.Quantity * existingItem.Price; // Recalcula el total
             }
             else if (existingItem != null && quantity == 0)
             {
                 RemoveItem(productId);
             }
+        }
+
+        /// <summary>
+        /// Calcula el subtotal de los artículos en el carrito (sin incluir costos adicionales como envío).
+        /// </summary>
+        /// <returns>El subtotal de los artículos en el carrito.</returns>
+        public decimal CalculateSubtotal()
+        {
+            return Items.Sum(i => i.Quantity * i.Price);
+        }
+
+        /// <summary>
+        /// Calcula el total general del carrito, incluyendo un costo adicional fijo.
+        /// </summary>
+        /// <param name="shippingCost">El costo de envío (opcional, por defecto 0).</param>
+        /// <returns>El total general del carrito.</returns>
+        public decimal CalculateTotal(decimal shippingCost = 0)
+        {
+            return CalculateSubtotal() + shippingCost;
+        }
+
+        /// <summary>
+        /// Vacía todos los artículos del carrito.
+        /// </summary>
+        public void ClearCart()
+        {
+            Items.Clear();
+        }
+
+        /// <summary>
+        /// Obtiene la cantidad total de artículos en el carrito (suma de cantidades de todos los productos).
+        /// </summary>
+        /// <returns>La cantidad total de artículos en el carrito.</returns>
+        public int GetTotalItemCount()
+        {
+            return Items.Sum(i => i.Quantity);
         }
     }
 }

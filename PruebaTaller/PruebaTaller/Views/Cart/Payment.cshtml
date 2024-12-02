@@ -1,9 +1,9 @@
-﻿@* @{
+﻿@* @* @* @* @* @* @* @* @* @{
     ViewData["Title"] = "Payment";
 }
 
 <div class="container my-5">
-    <h2 class="text-center display-4 mb-5" style="color: #DA9D19; text-shadow: 2px 2px #000;">Proceed to Payment</h2>
+    <h2 class="text-center display-4 mb-5" style="color: #DA9D19; text-shadow: 2px 2px #000;">Pago</h2>
 
     <!-- Mensajes de éxito o error -->
     @if (ViewBag.SuccessMessage != null)
@@ -20,8 +20,8 @@
         </div>
     }
 
-    <div class="row">
-        <!-- Detalles de Envío -->
+   @*  <div class="row"> *@
+       @*  <!-- Detalles de Envío -->
         <div class="col-lg-6 mb-4">
             <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #2c2f33, #393e46); color: #E6FBFA; border-radius: 15px;">
                 <h4 class="mb-4" style="color: #DA9D19;">Shipping Details</h4>
@@ -54,22 +54,22 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> *@
 
-        <!-- Métodos de Pago -->
+        @* <!-- Métodos de Pago -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #222831, #393e46); color: #E6FBFA; border-radius: 15px;">
-                <h4 class="text-warning mb-4">Payment Methods</h4>
+                <h4 class="text-warning mb-4">Métodos de pago</h4>
 
                 <!-- Botón PayPal -->
                 <div class="text-center mb-4">
                     <div id="paypal-button-container"></div> <!-- Contenedor para el botón de PayPal -->
                 </div>
 
-                <hr class="text-muted">
+                <hr class="text-muted"> *@
 
                 <!-- Tarjeta de Crédito o Débito -->
-                <h5 class="text-light mb-3">Pay with Credit or Debit Card</h5>
+                @* <h5 class="text-light mb-3">Pay with Credit or Debit Card</h5>
                 <form>
                     <div class="mb-3">
                         <label for="cardNumber" class="form-label">Card Number</label>
@@ -86,8 +86,8 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-lg btn-warning w-100 mt-3 fw-bold" style="background-color: #DA9D19; border: none;">Confirm Payment</button>
-                </form>
-            </div>
+ @*                </form> *@
+@*             </div>
         </div>
     </div>
 </div>
@@ -166,39 +166,39 @@
                         value: '100.00' // Puedes hacerlo dinámico desde el servidor
                     }
                 }]
-            });
-        },
-        onApprove: function (data, actions) {
-            return actions.order.capture().then(function (details) {
-                console.log("Pago aprobado:", details);
+            }); *@
+@* //         },
+//         onApprove: function (data, actions) {
+//             return actions.order.capture().then(function (details) {
+//                 console.log("Pago aprobado:", details);
 
-                var paymentData = {
-                    paymentId: data.paymentID,
-                    payerId: data.payerID,
-                    orderId: "12345" // Ajusta para usar el ID real de la orden
-                };
+//                 var paymentData = {
+//                     paymentId: data.paymentID,
+//                     payerId: data.payerID,
+//                     orderId: "12345" // Ajusta para usar el ID real de la orden
+//                 };
 
-                fetch('/Order/CompleteOrder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(paymentData)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        window.location.href = '/Order/OrderCompleted';
-                    })
-                    .catch(error => {
-                        console.error('Error al procesar el pago:', error);
-                        window.location.href = '/Order/PaymentError';
-                    });
-            });
-        },
-        onCancel: function (data) {
-            console.log('El pago fue cancelado');
-            window.location.href = '/Order/CancelOrder';
-        }
-    }).render('#paypal-button-container');
-</script>
+//                 fetch('/Order/CompleteOrder', {
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify(paymentData)
+//                 })
+//                     .then(response => response.json())
+//                     .then(data => {
+//                         window.location.href = '/Order/OrderCompleted';
+//                     })
+//                     .catch(error => {
+//                         console.error('Error al procesar el pago:', error);
+//                         window.location.href = '/Order/PaymentError';
+//                     });
+//             });
+//         },
+//         onCancel: function (data) {
+//             console.log('El pago fue cancelado');
+//             window.location.href = '/Order/CancelOrder';
+//         }
+//     }).render('#paypal-button-container');
+// </script>
  *@

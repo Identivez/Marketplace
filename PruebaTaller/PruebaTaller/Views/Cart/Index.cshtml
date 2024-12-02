@@ -1,7 +1,16 @@
 ﻿@model List<Cart_Item>
 
+@inject IConfiguration Configuration
+
 @{
     ViewData["Title"] = "Carrito de Compras";
+
+    // Leer el costo de envío desde appsettings.json
+    decimal shippingCost = Configuration.GetValue<decimal>("OrderSettings:ShippingCost");
+    decimal taxRate = 0.16m; // Tasa de IVA (16% como ejemplo)
+    decimal subtotal = Model.Sum(x => x.Price * x.Quantity); // Subtotal de los artículos
+    decimal tax = subtotal * taxRate; // Cálculo del IVA
+    decimal total = subtotal + tax + shippingCost; // Total general
 }
 
 <div class="container my-5">
@@ -34,9 +43,8 @@
                                         </div>
                                         <input type="number" class="form-control text-center update-quantity" value="@item.Quantity" min="1" data-product-id="@item.ProductId" style="width: 60px;" />
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <button class="btn btn-outline-light btn-sm"><i class="bi bi-heart"></i> Mover a Favoritos</button>
-                                        <button class="btn btn-outline-light btn-sm"><i class="bi bi-save"></i> Guardar para Después</button>
+                                    <p class="fw-bold mb-0">Total: @item.TotalPrice.ToString("C")</p>
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
                                         <button class="btn btn-danger btn-sm remove-item" data-product-id="@item.ProductId"><i class="bi bi-trash"></i> Eliminar</button>
                                     </div>
                                 </div>
@@ -51,21 +59,21 @@
                 <div class="card border-0 p-4" style="background: #222831; color: #ffffff;">
                     <h4 class="text-left mb-4" style="font-weight: bold;">Resumen</h4>
                     <div class="d-flex justify-content-between mb-3">
-                        <span>Artículos:</span>
-                        <span class="fw-bold text-success">@Model.Sum(x => x.Price * x.Quantity).ToString("C")</span>
+                        <span>Subtotal:</span>
+                        <span class="fw-bold text-success">@subtotal.ToString("C")</span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        <span>Est. Envío:</span>
-                        <span class="fw-bold text-info">$10.00</span>
+                        <span>IVA (16%):</span>
+                        <span class="fw-bold text-info">@tax.ToString("C")</span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
-                        <span>Est. IVA:</span>
-                        <span class="fw-bold text-info">$10.00</span>
+                        <span>Costo de Envío:</span>
+                        <span class="fw-bold text-info">@shippingCost.ToString("C")</span>
                     </div>
                     <hr class="text-muted">
                     <div class="d-flex justify-content-between">
                         <span>Total:</span>
-                        <span class="fw-bold fs-3 text-warning">@((Model.Sum(x => x.Price * x.Quantity) + 35.00m).ToString("C"))</span>
+                        <span class="fw-bold fs-3 text-warning">@total.ToString("C")</span>
                     </div>
                     <a href="/Cart/ShippingForm" class="btn btn-lg btn-warning mt-4 w-100 fw-bold shadow" style="background-color: #FF9900; border: none;">Pagar de Forma Segura</a>
                 </div>
@@ -75,7 +83,6 @@
 </div>
 
 <!-- Script para manejar la actualización de cantidades y eliminación de elementos -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         // Actualizar cantidad de artículos

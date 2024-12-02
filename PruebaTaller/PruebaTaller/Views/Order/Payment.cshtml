@@ -20,74 +20,17 @@
         </div>
     }
 
-    <div class="row">
-        <!-- Detalles de Envío -->
-        <div class="col-lg-6 mb-4">
-            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #2c2f33, #393e46); color: #E6FBFA; border-radius: 15px;">
-                <h4 class="mb-4" style="color: #DA9D19;">Shipping Details</h4>
-                <form>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control shadow-sm" id="fullName" placeholder="Enter your full name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control shadow-sm" id="address" placeholder="Street address, P.O. box, company name, c/o" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="city" class="form-label">City</label>
-                        <input type="text" class="form-control shadow-sm" id="city" placeholder="Enter your city" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="state" class="form-label">State</label>
-                            <input type="text" class="form-control shadow-sm" id="state" placeholder="Enter your state" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="zip" class="form-label">Zip Code</label>
-                            <input type="text" class="form-control shadow-sm" id="zip" placeholder="Enter your zip code" required>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control shadow-sm" id="phone" placeholder="Enter your phone number" required>
-                    </div>
-                </form>
+    <!-- Métodos de Pago -->
+    <div class="col-lg-6 mx-auto">
+        <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #222831, #393e46); color: #E6FBFA; border-radius: 15px;">
+            <h4 class="text-warning mb-4">Payment Methods</h4>
+
+            <!-- Botón PayPal -->
+            <div class="text-center mb-4">
+                <div id="paypal-button-container"></div> <!-- Contenedor para el botón de PayPal -->
             </div>
-        </div>
 
-        <!-- Métodos de Pago -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-lg p-4" style="background: linear-gradient(135deg, #222831, #393e46); color: #E6FBFA; border-radius: 15px;">
-                <h4 class="text-warning mb-4">Payment Methods</h4>
-
-                <!-- Botón PayPal -->
-                <div class="text-center mb-4">
-                    <div id="paypal-button-container"></div> <!-- Contenedor para el botón de PayPal -->
-                </div>
-
-                <hr class="text-muted">
-
-                <!-- Tarjeta de Crédito o Débito -->
-                <h5 class="text-light mb-3">Pay with Credit or Debit Card</h5>
-                <form>
-                    <div class="mb-3">
-                        <label for="cardNumber" class="form-label">Card Number</label>
-                        <input type="text" class="form-control shadow-sm" id="cardNumber" placeholder="xxxx-xxxx-xxxx-xxxx" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="expiryDate" class="form-label">Expiry Date</label>
-                            <input type="text" class="form-control shadow-sm" id="expiryDate" placeholder="MM/YY" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control shadow-sm" id="cvv" placeholder="CVV" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-warning w-100 mt-3 fw-bold" style="background-color: #DA9D19; border: none;">Confirm Payment</button>
-                </form>
-            </div>
+            <hr class="text-muted">
         </div>
     </div>
 </div>
@@ -108,43 +51,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-    .form-control {
-        border-radius: 10px;
-        background-color: #2c2f33;
-        color: #E6FBFA;
-        border: 1px solid #444;
-        transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-        .form-control:hover,
-        .form-control:focus {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-    .btn-warning {
-        background-color: #DA9D19;
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s, background-color 0.3s;
-    }
-
-        .btn-warning:hover {
-            background-color: #e68a00;
-            transform: translateY(-2px);
-        }
-
-    .btn-outline-primary {
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-        .btn-outline-primary:hover {
-            background-color: #005ea6;
-            border-color: #005ea6;
-            transform: scale(1.05);
-        }
-
     h2 {
         text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
     }
@@ -158,47 +64,79 @@
 <script src="https://www.paypal.com/sdk/js?client-id=Afbj9DqPgOcWa9rc8FIVSq6AMWFIizLaXmhwOiskli1JQWHy2hNWPjPUGnHmisy9-FEuoOQkD1wJmnaE&currency=USD"></script>
 
 <script>
-   paypal.Buttons({
-    createOrder: function(data, actions) {
-        return actions.order.create({
-            purchase_units: [{
-                amount: {
-                    value: '100.00'  // Este valor puede ser dinámico
-                }
-            }]
-        });
-    },
-    onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-            console.log("Pago aprobado:", details);
+    // Obtén el total dinámico desde el servidor
+    const totalAmount = parseFloat("@ViewBag.TotalAmount"); // Convertimos a float para usarlo en JavaScript
+    const shippingDetailsId = @ViewBag.ShippingDetailsId; // Pasar ShippingDetailsId desde el controlador
 
-            var paymentData = {
-                paymentId: data.paymentID,
-                payerId: data.payerID,
-                orderId: "12345"  // Asegúrate de pasar el ID real de la orden aquí
-            };
-
-            fetch('/Order/CompleteOrder', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(paymentData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = '/Order/OrderCompleted'; // Redirigir al usuario después de completar la orden
-            })
-            .catch(error => {
-                console.error('Error al procesar el pago:', error);
-                window.location.href = '/Order/PaymentError';  // Redirige a la página de error si algo falla
-            });
-        });
-    },
-    onCancel: function(data) {
-        console.log('El pago fue cancelado');
-        window.location.href = '/Order/CancelOrder';  // Redirige a la página de cancelación si el usuario cancela el pago
+    if (!totalAmount || totalAmount <= 0) {
+        console.error("El total de la orden no está configurado correctamente.");
     }
-}).render('#paypal-button-container'); // Renderiza el botón de PayPal
 
+    paypal.Buttons({
+        // Crear la orden en PayPal
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: totalAmount.toFixed(2) // Ahora puedes usar toFixed en JavaScript
+                    }
+                }]
+            });
+        },
+
+        // Manejar la aprobación del pago
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+                console.log("Pago aprobado:", details);
+
+                if (!details || !data.orderID || !details.payer.payer_id) {
+                    console.error("Datos del pago incompletos o inválidos.");
+                    window.location.href = '/order/paymenterror'; // Cambié la ruta a '/order/paymenterror'
+                    return;
+                }
+
+                // Preparar los datos del pago para enviar al backend
+                const paymentData = {
+                    paymentId: data.orderID, // ID de la orden en PayPal
+                    payerId: details.payer.payer_id, // ID del pagador en PayPal
+                    shippingDetailsId: shippingDetailsId // ID de los detalles de envío
+                };
+
+                // Enviar datos del pago al backend
+                fetch('/order/completeorder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paymentData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al procesar el pago.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Respuesta del servidor:", data);
+                        window.location.href = '/order/ordercompleted'; // Redirigir a la página de confirmación
+                    })
+                    .catch(error => {
+                        console.error('Error al procesar el pago:', error);
+                        window.location.href = '/order/paymenterror'; // Redirigir a la página de error
+                    });
+            });
+        },
+
+        // Manejar la cancelación del pago
+        onCancel: function (data) {
+            console.log('El pago fue cancelado');
+            window.location.href = '/order/cancelorder'; // Redirigir a la página de cancelación
+        },
+
+        // Manejar errores en la configuración del botón
+        onError: function (err) {
+            console.error('Error en PayPal:', err);
+            window.location.href = '/order/paymenterror'; // Redirigir a la página de error
+        }
+    }).render('#paypal-button-container'); // Renderizar el botón de PayPal
 </script>

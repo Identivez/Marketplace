@@ -14,6 +14,7 @@ namespace PruebaTaller.Services
         public DbSet<Review> Reviews { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<ShippingDetails> ShippingDetails { get; set; }
+         public DbSet<OrderItem> OrderItems { get; set; }
 
 
         // No necesitamos que PaymentData sea persistido en la base de datos,

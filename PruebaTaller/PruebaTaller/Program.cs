@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PruebaTaller.Models;
 using PruebaTaller.Services;
-using GEJ_Lab.Models; // Agrega el namespace de PayPalService
+using GEJ_Lab.Models;
+using GEJ_Lab.Services; // Agrega el namespace de PayPalService
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddControllersWithViews();
 
 // Registrar HttpClient
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<CartService>();
+
 
 // Registrar el servicio de sesión
 builder.Services.AddSession(options =>
@@ -75,5 +79,6 @@ using (var scope = app.Services.CreateScope())
 
     await DatabaseInitializer.SeedDataAsync(userManager, roleManager);
 }
+
 
 app.Run();
