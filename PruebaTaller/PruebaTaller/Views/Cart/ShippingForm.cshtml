@@ -1,0 +1,129 @@
+﻿@using GEJ_Lab.Models
+@model ShippingDetailsDTOO
+
+@{
+    ViewData["Title"] = "Detalles de Envío";
+}
+
+<!-- Estilos personalizados -->
+<style>
+    body {
+        background-color: #1c1e21;
+        color: #e0e0e0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin-top: 50px;
+        background-color: #2c2f33;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        color: #FF9900;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        color: #FF9900;
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #444;
+        background-color: #1c1e21;
+        color: #e0e0e0;
+        padding: 10px;
+    }
+
+        .form-control:focus {
+            border-color: #FF9900;
+            box-shadow: 0 0 8px rgba(255, 153, 0, 0.6);
+        }
+
+    .btn-warning {
+        background-color: #FF9900;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+        .btn-warning:hover {
+            background-color: #e68a00;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+    .alert {
+        border-radius: 10px;
+    }
+
+    .validation-message {
+        color: #FF6B6B;
+        font-size: 0.9em;
+    }
+</style>
+
+<div class="container">
+    <h2>Detalles de Envío</h2>
+
+    <!-- Mensajes de error generales -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <strong>Error!</strong> @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <!-- Mostrar todos los errores de validación -->
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+    <form asp-action="CreateShippingDetails" asp-controller="Cart" method="post">
+       
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Nombre Completo</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="validation-message"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">Dirección</label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="validation-message"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="City" class="form-label">Ciudad</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="validation-message"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="State" class="form-label">Estado</label>
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="validation-message"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="ZipCode" class="form-label">Código Postal</label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="validation-message"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Número de Teléfono</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="validation-message"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-warning w-100 mt-4 fw-bold shadow">Guardar Detalles de Envío</button>
+    </form>
+</div>

@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Error de Envío";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-danger">Error al Guardar los Detalles de Envío</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Error!</strong> @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="text-center">
+        <a href="@Url.Action("ShippingForm", "Cart")" class="btn btn-warning mt-4">Regresar al Formulario de Envío</a>
+    </div>
+</div>

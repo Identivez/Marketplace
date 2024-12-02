@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PruebaTaller.Services;
 
@@ -11,9 +12,11 @@ using PruebaTaller.Services;
 namespace GEJ_Lab.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241202052742_updateOrdermodel")]
+    partial class updateOrdermodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,7 +240,7 @@ namespace GEJ_Lab.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -258,8 +261,7 @@ namespace GEJ_Lab.Migrations
                     b.HasKey("ShippingDetailsId");
 
                     b.HasIndex("OrderId")
-                        .IsUnique()
-                        .HasFilter("[OrderId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("ShippingDetails");
                 });
@@ -652,7 +654,9 @@ namespace GEJ_Lab.Migrations
                 {
                     b.HasOne("GEJ_Lab.Models.Order", "Order")
                         .WithOne("ShippingDetails")
-                        .HasForeignKey("GEJ_Lab.Models.ShippingDetails", "OrderId");
+                        .HasForeignKey("GEJ_Lab.Models.ShippingDetails", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
                 });

@@ -197,5 +197,76 @@ namespace PruebaTaller.Controllers
             // Redirigir al carrito para ver los cambios
             return Json(new { success = true });
         }
+        // Acción para mostrar la vista de formulario de envío
+        [HttpGet]
+        public IActionResult ShippingForm()
+        {
+            var shippingDetailsDto = new ShippingDetailsDTOO();
+            return View(shippingDetailsDto);
+        }
+
+        // Acción para guardar los detalles de envío
+        [HttpPost]
+        public async Task<IActionResult> CreateShippingDetails(ShippingDetailsDTOO shippingDetailsDto)
+        {
+            // Valida el modelo sin considerar OrderId
+            if (!ModelState.IsValid)
+            {
+                // Muestra los errores específicos en la vista.
+                ViewBag.ErrorMessage = "Invalid data provided. Please check the fields below.";
+                return View("ShippingForm", shippingDetailsDto);
+            }
+
+            try
+            {
+                // Mapear DTO a la entidad
+                var shippingDetails = new ShippingDetails
+                {
+                    // OrderId no se asigna aquí
+                    FullName = shippingDetailsDto.FullName,
+                    Address = shippingDetailsDto.Address,
+                    City = shippingDetailsDto.City,
+                    State = shippingDetailsDto.State,
+                    ZipCode = shippingDetailsDto.ZipCode,
+                    PhoneNumber = shippingDetailsDto.PhoneNumber
+                };
+
+                // Guardar en la base de datos
+                _context.ShippingDetails.Add(shippingDetails);
+                await _context.SaveChangesAsync();
+
+                // Redirigir a la confirmación
+                return RedirectToAction("ShippingDetailsConfirmation");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejo de errores específicos de la base de datos
+                ViewBag.ErrorMessage = $"Database error: {ex.Message}";
+                return View("ShippingError");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores generales
+                ViewBag.ErrorMessage = $"Unexpected error: {ex.Message}";
+                return View("ShippingError");
+            }
+        }
+
+
+        // Acción para confirmar que los detalles de envío se guardaron correctamente
+        public IActionResult ShippingDetailsConfirmation()
+        {
+            ViewBag.SuccessMessage = "Shipping details have been saved successfully.";
+            return View();
+        }
+
+        // Acción para manejar errores al guardar los detalles de envío
+        public IActionResult ShippingError()
+        {
+            ViewBag.ErrorMessage = "An error occurred while saving the shipping details. Please try again.";
+            return View();
+        }
     }
+   
 }
+
